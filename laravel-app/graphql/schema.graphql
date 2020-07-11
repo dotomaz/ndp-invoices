@@ -1,0 +1,168 @@
+"A datetime string with format `Y-m-d H:i:s`, e.g. `2018-01-01 13:00:00`."
+scalar DateTime @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\DateTime")
+
+"A date string with format `Y-m-d`, e.g. `2011-05-23`."
+scalar Date @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\Date")
+
+type Query {
+    invoice_periods: [InvoicePeriod!]! @paginate(type: "paginator" model: "App\\InvoicePeriod")
+    invoice_period(id: ID @eq): InvoicePeriod @find(model: "App\\InvoicePeriod")
+    invoices: [Invoice!]! @paginate(type: "paginator" model: "App\\Invoice")
+    invoices_per_period(period_id:Int @eq): [Invoice!]! @paginate(type: "paginator" model: "App\\Invoice")
+    invoice(id: ID @eq): Invoice @find(model: "App\\Invoice")
+}
+
+type Mutation {
+    createInvoicePeriod(input: InvoicePeriodInput! @spread): InvoicePeriod @create
+    updateInvoicePeriod(id: ID!, input: InvoicePeriodInput! @spread): InvoicePeriod @update
+    deleteInvoicePeriod(id: ID!): InvoicePeriod @delete
+    createInvoice(input: InvoiceInput! @spread): Invoice @create
+    updateInvoice(id: ID!, input: InvoiceInput! @spread): Invoice @update
+    deleteInvoice(id: ID!): Invoice @delete
+}
+
+type InvoicePeriod {
+    id: ID!
+    month: Int
+    year: Int
+}
+
+type Invoice {
+    id: ID!
+    period_id: Int
+    period: InvoicePeriod @belongsTo
+    parent_name: String
+    child_name: String
+    email: String
+    address: String
+    city: String
+    price: Float
+    discount: Float
+    reference: String
+    sent: Int
+    sent_date: DateTime 
+}
+
+input InvoicePeriodInput {
+    month: Int
+    year: Int
+}
+
+input InvoiceInput {
+    period_id: Int
+    parent_name: String
+    child_name: String
+    email: String
+    address: String
+    city: String
+    price: Float
+    discount: Float
+    reference: String
+    sent: Int
+    sent_date: DateTime 
+}
+
+
+
+
+
+# input DateTimeRange {
+#     from: DateTime!
+#     to: DateTime!
+# }
+# 
+# type Query {
+#     users: [User!]! @paginate(type: "paginator" model: "App\\User")
+#     user(id: ID @eq): User @find(model: "App\\User")
+#     travel_orders_all: [TravelOrder!]! @paginate(type: "paginator" model: "App\\TravelOrder")
+#     travel_order(
+#         id: ID @eq, 
+#         start_date: DateTimeRange @whereBetween, 
+#         end_date: DateTimeRange @whereBetween
+#     ): TravelOrder @find(model: "App\\TravelOrder")
+# }
+
+# type Mutation {
+#     createUser(input: CreateUserInput! @spread): User @create
+#     updateUser(id: ID!, input: CreateUserInput! @spread): User @update
+#     deleteUser(id: ID!): User @delete
+#     createTravelOrder(input: TravelOrderInput! @spread): TravelOrder @create
+#     updateTravelOrder(id: ID!, input: TravelOrderInput! @spread): TravelOrder @update
+#     deleteTravelOrder(id: ID!): TravelOrder @delete
+# }
+
+# enum OrderType {
+#     PERSONAL
+#     PHONE
+#     MOBILE
+#     FAX
+#     EMAIL
+# }
+
+# type User {
+#     id: ID!
+#     name: String!
+#     email: String!
+#     created_at: DateTime!
+#     updated_at: DateTime!
+#     address: String
+#     postal_code: String
+#     city: String
+#     phone: String
+#     enabled: Int
+#     price_per_km: Float
+#     trr: String
+#     travel_orders: [TravelOrder!]! @hasMany
+# }
+
+# input CreateUserInput {
+#     name: String!
+#     email: String!
+#     address: String!
+#     postal_code: String!
+#     city: String!
+#     phone: String!
+#     enabled: Int
+#     price_per_km: Float
+#     trr: String
+# }
+
+# type TravelOrder {
+#     id: ID!
+#     created_at: DateTime!
+#     updated_at: DateTime!
+#     start_date: DateTime
+#     end_date: DateTime
+#     number: String
+#     per_diem: Int
+#     per_diem_amount: Float
+#     user_id: Int
+#     user: User @belongsTo
+#     ordered_by_id: Int
+#     ordered_by: User @belongsTo
+#     order_type: OrderType
+#     vehicle: String
+#     distance: Int
+#     price_per_km: Float
+#     destination: String
+#     purpose_of_the_trip: String
+#     description: String
+#     report: String
+# }
+
+# input TravelOrderInput {
+#     start_date: DateTime
+#     end_date: DateTime
+#     per_diem: Int
+#     per_diem_amount: Float
+#     user_id: Int
+#     ordered_by_id: Int
+#     order_type: OrderType
+#     vehicle: String
+#     distance: Int
+#     price_per_km: Float
+#     destination: String
+#     purpose_of_the_trip: String
+#     description: String
+#     report: String
+# }
