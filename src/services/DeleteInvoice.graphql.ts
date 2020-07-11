@@ -11,14 +11,14 @@ class DeleteInvoice extends BaseService<any> {
     }
 `;
 
-    mutate(id: string){
+    mutate(id: number){
         return this.client.mutate<DeleteInvoiceMutationMutation, DeleteInvoiceMutationMutationVariables>({ 
             mutation: this.query,
             variables: { 
-                id: id,
+                id: `${id}`,
             },
         })
-            .then(result => result?.data?.deleteUser);
+            .then(result => result?.data?.deleteInvoice);
     }
 }
 

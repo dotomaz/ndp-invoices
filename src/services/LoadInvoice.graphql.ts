@@ -27,11 +27,11 @@ class GetUsers extends BaseService<any> {
     }
 `;
 
-    fetch(id: string){
+    fetch(id: number){
         return this.client.query<LoadInvoiceQuery, LoadInvoiceQueryVariables>({ 
             // fetchPolicy: 'network-only',
             query: this.query,
-            variables: { id },
+            variables: { id: `${id}` },
         })
             .then(result => result?.data?.invoice
             );

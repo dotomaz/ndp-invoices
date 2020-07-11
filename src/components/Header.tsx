@@ -60,11 +60,10 @@ const HeaderComponent: React.FunctionComponent<Props> = (props) => {
             <Container>
                 <Col1 sizes={['md-6']}>
                     <StyledIconHotel/>
-                    <Title>Potni nalog</Title>
+                    <Title>NDP POLOŽNICE</Title>
                 </Col1>
                 <Col2 sizes={['md-6']}>
-                    <Link to="/">Potni nalogi</Link>
-                    <Link to="/users">Uporabniki</Link>
+                    <Link to="/">Seznam</Link>
                 </Col2>
                 
             </Container>

@@ -41,13 +41,13 @@ const CheckboxComponent = styled.input`
 
 `;
 
-const InputCurrencyComponent = styled(InputComponent)`
+const InputCurrencyComponent = styled(InputComponent as any)`
     display: inline-block;
     max-width: 100px;
     margin-right: 10px;
 `;
 
-const InputDistanceComponent = styled(InputComponent)`
+const InputDistanceComponent = styled(InputComponent as any)`
     display: inline-block;
     max-width: 100px;
     margin-right: 10px;
@@ -84,7 +84,7 @@ const FormComponent: React.FunctionComponent<Props> = (props) => {
                         value={props.value}
                         className="form-control"
                         disabled={props.disabled || false}
-                        onChange={(event) => onChange(event)}
+                        onChange={(event: React.FormEvent<HTMLInputElement>) => onChange(event)}
                     />
                 )}
 
@@ -95,7 +95,7 @@ const FormComponent: React.FunctionComponent<Props> = (props) => {
                             value={props.value}
                             className="form-control"
                             disabled={props.disabled || false}
-                            onChange={(event) => onChange(event)}
+                            onChange={(event: React.FormEvent<HTMLInputElement>) => onChange(event)}
                         />
                         <span>EUR</span>
                     </>
@@ -108,7 +108,7 @@ const FormComponent: React.FunctionComponent<Props> = (props) => {
                             value={props.value}
                             className="form-control"
                             disabled={props.disabled || false}
-                            onChange={(event) => onChange(event)}
+                            onChange={(event: React.FormEvent<HTMLInputElement>) => onChange(event)}
                         />
                         <span>KM</span>
                     </>
@@ -119,14 +119,14 @@ const FormComponent: React.FunctionComponent<Props> = (props) => {
                         type="checkbox"
                         checked={props.value === '1'}
                         disabled={props.disabled || false}
-                        onChange={(event) => onChange(event)}
+                        onChange={(event: React.FormEvent<HTMLInputElement>) => onChange(event)}
                     />
                 )}
 
                 {props.type === 'textarea' && (
                     <TextareaComponent
                         value={props.value}
-                        onChange={(event) => onChange(event)}
+                        onChange={(event: React.ChangeEvent<HTMLTextAreaElement>) => onChange(event)}
                         disabled={props.disabled || false}
                         className="form-control"
                     />
@@ -135,7 +135,7 @@ const FormComponent: React.FunctionComponent<Props> = (props) => {
                 {props.type === 'select' && (
                     <SelectComponent
                         value={props.value}
-                        onChange={(event) => onChange(event)}
+                        onChange={(event: React.ChangeEvent<HTMLSelectElement>) => onChange(event)}
                         disabled={props.disabled || false}
                         className="form-control"
                     >
@@ -150,8 +150,8 @@ const FormComponent: React.FunctionComponent<Props> = (props) => {
                 {props.type === 'date-time' && (
                     <DatePicker
                         className="form-control"
-                        selected={parse(props.value || '')}
-                        onChange={(value) => onChange({ target: { value: format(value || '', 'YYYY-MM-DD HH:mm:ss'), type: 'date-type' } })}
+                        selected={parse(props.value || '', 'YYYY-MM-DD HH:mm:ss', new Date())}
+                        onChange={(value: any) => onChange({ target: { value: format(value || '', 'YYYY-MM-DD HH:mm:ss'), type: 'date-type' } })}
                         showTimeSelect
                         timeFormat="HH:mm"
                         timeIntervals={15}

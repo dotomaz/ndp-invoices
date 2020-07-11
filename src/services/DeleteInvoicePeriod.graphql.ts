@@ -11,11 +11,11 @@ class DeleteInvoicePeriod extends BaseService<any> {
     }
 `;
 
-    mutate(id: string){
+    mutate(id: number){
         return this.client.mutate<DeleteInvoicePeriodMutationMutation, DeleteInvoicePeriodMutationMutationVariables>({ 
             mutation: this.query,
             variables: { 
-                id: id,
+                id: `${id}`,
             },
         })
             .then(result => result?.data?.deleteInvoicePeriod);

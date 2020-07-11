@@ -3,7 +3,7 @@ import { InvoicePeriod } from './InvoicePeriod.interface';
 export interface Invoice {
     id: number;
     period_id: number;
-    period: InvoicePeriod;
+    period?: InvoicePeriod;
     parent_name: string;
     child_name: string;
     email: string;
@@ -13,5 +13,5 @@ export interface Invoice {
     discount: number;
     reference: string;
     sent: boolean;
-    sent_date: string 
+    sent_date?: string 
 };

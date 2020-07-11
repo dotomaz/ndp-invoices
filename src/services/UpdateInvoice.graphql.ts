@@ -16,7 +16,7 @@ class UpdateInvoice extends BaseService<any> {
         return this.client.mutate<UpdateInvoiceMutation, UpdateInvoiceMutationVariables>({ 
             mutation: this.query,
             variables: { 
-                id: invoice.id,
+                id: `${invoice.id}`,
                 input: {
                     period_id: invoice.period_id,
                     parent_name: invoice.parent_name,

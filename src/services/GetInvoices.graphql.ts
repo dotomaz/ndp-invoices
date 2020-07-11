@@ -1,12 +1,12 @@
 import gql from "graphql-tag";
 import BaseService from './BaseService';
-import { GetInvoicesQuery, GetInvoicesVariables } from '../generated/graphql';
+import { GetInvoicesQuery, GetInvoicesQueryVariables } from '../generated/graphql';
 
 class GetInvoices extends BaseService<any> {
 
     query = gql`
-    query GetInvoices(periodId: Int!, $page: Int!) {
-        invoices_per_period(first:100,  page: $page){
+    query GetInvoices($periodId: Int!, $page: Int!) {
+        invoices_per_period(period_id: $periodId, first:100,  page: $page){
             data{
                 id
                 period {
@@ -30,11 +30,11 @@ class GetInvoices extends BaseService<any> {
     }
 `;
 
-    fetch(page: number){
-        return this.client.query<GetInvoicesQuery, GetInvoicesVariables>({ 
+    fetch(periodId: number, page: number){
+        return this.client.query<GetInvoicesQuery, GetInvoicesQueryVariables>({ 
             // fetchPolicy: 'network-only',
             query: this.query,
-            variables: { page },
+            variables: { periodId, page },
         })
             .then(result => result?.data?.invoices_per_period?.data);
     }

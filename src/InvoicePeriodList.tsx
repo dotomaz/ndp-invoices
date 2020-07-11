@@ -1,8 +1,9 @@
 import React, { useState, useContext } from 'react';
 import styled from 'styled-components';
 import { observer } from 'mobx-react-lite';
+import { Link } from '@reach/router'
 
-import { User } from './types/InvoicePeriod.interface';
+import { InvoicePeriod } from './types/InvoicePeriod.interface';
 
 import PageContainer from './components/PageContainer';
 import BaseButton from './components/Button';
@@ -10,7 +11,7 @@ import BaseRow from './components/Row';
 import Col from './components/Col';
 import Loading from './components/Loading';
 import Sidebar from './components/Sidebar';
-import UserEdit from './UserEdit';
+import InvoicePeriodEdit from './InvoicePeriodEdit';
 import { MainStoreContext } from './store/Main';
 
 
@@ -51,7 +52,7 @@ const Col3 = styled(Col)`
     justify-content: flex-end;
 `;
 
-const Button = styled(BaseButton)`
+const Button = styled(BaseButton as any)`
     padding: 1px 5px;
     margin-left: 5px;
     font-size: 12px;
@@ -62,46 +63,48 @@ const Button = styled(BaseButton)`
     }
 `;
 
-const UserList: React.FunctionComponent<Props> = () => {
+const months = ['januar','februar', 'marec', 'april', 'maj', 'junij', 'julij', 'avgust', 'september', 'oktober', 'november', 'december']
+
+const InvoicePeriodList: React.FunctionComponent<Props> = () => {
     const store = useContext(MainStoreContext);
     const [isOpenSidebar, setIsOpenSidebar] = useState<boolean>(false);
 
-    const editUser = (user: User) => {
-        store.user = {...user};
+    const editInvoicePeriod = (invoicePeriod: InvoicePeriod) => {
+        store.invoicePeriod = {...invoicePeriod};
         setIsOpenSidebar(true);
     };
 
-    const newUser = () => {
-        store.newUser();
+    const newInvoicePeriod = () => {
+        store.newInvoicePeriod();
         setIsOpenSidebar(true);
     };
 
     return (
         <PageContainer>
-            <BaseButton onClick={() => newUser()}>Dodaj novega uporabnika</BaseButton>
+            <BaseButton onClick={() => newInvoicePeriod()}>Dodaj novo obračunsko obdobje</BaseButton>
 
-            {store.usersLoading && (
+            {store.invoicePeriodsLoading && (
                 <Loading />
             )}
 
-            { ( !store.usersLoading && !store.users.length ) && (
-                <Empty>Ni uporabnikov.</Empty>
+            { ( !store.invoicePeriodsLoading && !store.invoicePeriods.length ) && (
+                <Empty>Ni podatkov.</Empty>
             )}
 
-            { ( !store.usersLoading && !!store.users.length ) && (
+            { ( !store.invoicePeriodsLoading && !!store.invoicePeriods.length ) && (
                 <div className="container-fluid">
                     <Header>
-                        <Col1 sizes={['md-5']}>Ime in priimek</Col1>
-                        <Col2 sizes={['md-5']}>Email</Col2>
-                        <Col3 sizes={['md-2']}>
+                        <Col1 sizes={['md-8']}>Obdobje</Col1>
+                        <Col3 sizes={['md-4']}>
                         </Col3>
                     </Header>
-                { store.users.map((user: User, i: number) => { return (
-                    <Row key={user.id}>
-                        <Col1 sizes={['md-5']}>{user.name}</Col1>
-                        <Col2 sizes={['md-5']}>{user.email}</Col2>
+                { store.invoicePeriods.map((invoicePeriod: InvoicePeriod, i: number) => { return (
+                    <Row key={invoicePeriod.id}>
+                        <Col1 sizes={['md-8']}>
+                            <Link to={`/period/${invoicePeriod.id}`}>{months[invoicePeriod.month-1]} {invoicePeriod.year}</Link>
+                        </Col1>
                         <Col3 sizes={['md-2']}>
-                            <Button onClick={() => editUser(user)}>uredi</Button>
+                            <Button onClick={() => editInvoicePeriod(invoicePeriod)}>uredi</Button>
                             <Button>briši</Button>
                         </Col3>
                     </Row>
@@ -115,18 +118,18 @@ const UserList: React.FunctionComponent<Props> = () => {
                     onClose={() => setIsOpenSidebar(false)}
                     onConfirm={() => {
                         return store
-                            .saveUser()
+                            .saveInvoicePeriod()
                             .then(() => {
                                 setIsOpenSidebar(false);
-                                store.getUsers(1);
+                                store.getInvoicePeriods(1);
                             });
                         
                     }}
-                    ChildComponent={UserEdit}
+                    ChildComponent={InvoicePeriodEdit}
                 />
             )}
         </PageContainer>
     );
 };
 
-export default observer(UserList);
+export default observer(InvoicePeriodList);
