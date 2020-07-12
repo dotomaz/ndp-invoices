@@ -3,7 +3,8 @@ import DefaultClient from 'apollo-boost';
 
 class BaseService<T> {
     client: DefaultClient<T>;
-    uri = 'http://localhost/graphql';
+    uri = '/graphql';
+    // uri = 'https://localhost/graphql';
 
     constructor(token: string) {
         this.client = new ApolloClient<T>({
