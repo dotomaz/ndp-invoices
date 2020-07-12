@@ -1,0 +1,29 @@
+{
+  "files": {
+    "main.css": "/static/css/main.67aa0075.chunk.css",
+    "main.js": "/static/js/main.1c296a7a.chunk.js",
+    "main.js.map": "/static/js/main.1c296a7a.chunk.js.map",
+    "runtime-main.js": "/static/js/runtime-main.3f83bed4.js",
+    "runtime-main.js.map": "/static/js/runtime-main.3f83bed4.js.map",
+    "static/js/2.8f752ade.chunk.js": "/static/js/2.8f752ade.chunk.js",
+    "static/js/2.8f752ade.chunk.js.map": "/static/js/2.8f752ade.chunk.js.map",
+    "index.html": "/index.html",
+    "precache-manifest.9fbec57c02b0d219c02b289df98d95dc.js": "/precache-manifest.9fbec57c02b0d219c02b289df98d95dc.js",
+    "service-worker.js": "/service-worker.js",
+    "static/css/main.67aa0075.chunk.css.map": "/static/css/main.67aa0075.chunk.css.map",
+    "static/js/2.8f752ade.chunk.js.LICENSE.txt": "/static/js/2.8f752ade.chunk.js.LICENSE.txt",
+    "static/media/accounting.29fbad5b.svg": "/static/media/accounting.29fbad5b.svg",
+    "static/media/delete.097031a8.svg": "/static/media/delete.097031a8.svg",
+    "static/media/duplicate.1521950f.svg": "/static/media/duplicate.1521950f.svg",
+    "static/media/edit.a0751078.svg": "/static/media/edit.a0751078.svg",
+    "static/media/hotel.2c3c124a.svg": "/static/media/hotel.2c3c124a.svg",
+    "static/media/ndp-logo.png": "/static/media/ndp-logo.1bb8555b.png",
+    "static/media/spinner.2ee75d0f.svg": "/static/media/spinner.2ee75d0f.svg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.3f83bed4.js",
+    "static/js/2.8f752ade.chunk.js",
+    "static/css/main.67aa0075.chunk.css",
+    "static/js/main.1c296a7a.chunk.js"
+  ]
+}
