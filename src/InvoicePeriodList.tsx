@@ -53,17 +53,16 @@ const Col3 = styled(Col)`
 `;
 
 const Button = styled(BaseButton as any)`
-    padding: 1px 5px;
+    padding: 0px 5px;
     margin-left: 5px;
     font-size: 12px;
     font-weight: 400;
+    border-radius: 4px;
 
     &:first-child{
         margin-left: 0px;
     }
 `;
-
-const months = ['januar','februar', 'marec', 'april', 'maj', 'junij', 'julij', 'avgust', 'september', 'oktober', 'november', 'december']
 
 const InvoicePeriodList: React.FunctionComponent<Props> = () => {
     const store = useContext(MainStoreContext);
@@ -101,7 +100,7 @@ const InvoicePeriodList: React.FunctionComponent<Props> = () => {
                 { store.invoicePeriods.map((invoicePeriod: InvoicePeriod, i: number) => { return (
                     <Row key={invoicePeriod.id}>
                         <Col1 sizes={['md-8']}>
-                            <Link to={`/period/${invoicePeriod.id}`}>{months[invoicePeriod.month-1]} {invoicePeriod.year}</Link>
+                            <Link to={`/period/${invoicePeriod.id}`}>{store.months[invoicePeriod.month-1]} {invoicePeriod.year}</Link>
                         </Col1>
                         <Col3 sizes={['md-2']}>
                             <Button onClick={() => editInvoicePeriod(invoicePeriod)}>uredi</Button>

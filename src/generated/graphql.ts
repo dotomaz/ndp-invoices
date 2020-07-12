@@ -104,6 +104,7 @@ export type Invoice = {
   period?: Maybe<InvoicePeriod>;
   parent_name?: Maybe<Scalars['String']>;
   child_name?: Maybe<Scalars['String']>;
+  team?: Maybe<Scalars['Int']>;
   email?: Maybe<Scalars['String']>;
   address?: Maybe<Scalars['String']>;
   city?: Maybe<Scalars['String']>;
@@ -166,6 +167,7 @@ export type InvoiceInput = {
   period_id?: Maybe<Scalars['Int']>;
   parent_name?: Maybe<Scalars['String']>;
   child_name?: Maybe<Scalars['String']>;
+  team?: Maybe<Scalars['Int']>;
   email?: Maybe<Scalars['String']>;
   address?: Maybe<Scalars['String']>;
   city?: Maybe<Scalars['String']>;
@@ -304,7 +306,7 @@ export type GetInvoicesQuery = (
     { __typename?: 'InvoicePaginator' }
     & { data: Array<(
       { __typename?: 'Invoice' }
-      & Pick<Invoice, 'id' | 'parent_name' | 'child_name' | 'email' | 'address' | 'city' | 'price' | 'discount' | 'reference' | 'sent' | 'sent_date'>
+      & Pick<Invoice, 'id' | 'parent_name' | 'child_name' | 'team' | 'email' | 'address' | 'city' | 'price' | 'discount' | 'reference' | 'sent' | 'sent_date'>
       & { period?: Maybe<(
         { __typename?: 'InvoicePeriod' }
         & Pick<InvoicePeriod, 'id' | 'month' | 'year'>
@@ -338,7 +340,7 @@ export type LoadInvoiceQuery = (
   { __typename?: 'Query' }
   & { invoice?: Maybe<(
     { __typename?: 'Invoice' }
-    & Pick<Invoice, 'id' | 'parent_name' | 'child_name' | 'email' | 'address' | 'city' | 'price' | 'discount' | 'reference' | 'sent' | 'sent_date'>
+    & Pick<Invoice, 'id' | 'parent_name' | 'child_name' | 'team' | 'email' | 'address' | 'city' | 'price' | 'discount' | 'reference' | 'sent' | 'sent_date'>
     & { period?: Maybe<(
       { __typename?: 'InvoicePeriod' }
       & Pick<InvoicePeriod, 'id' | 'month' | 'year'>

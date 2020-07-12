@@ -8,8 +8,6 @@ import { Invoice } from './types/Invoice.interface';
 import PageContainer from './components/PageContainer';
 import BaseButton from './components/Button';
 import IconBaseButton from './components/IconButton';
-import BaseRow from './components/Row';
-import Col from './components/Col';
 import Loading from './components/Loading';
 import Sidebar from './components/Sidebar';
 import InvoiceEdit from './InvoiceEdit';
@@ -21,39 +19,31 @@ interface Props {
     invoicePeriodId?: number;
 }
 
-const Row = styled(BaseRow)`
-    padding: 5px 0;
+const Table = styled.table`
+    margin-top: 25px;
+    width: 100%;
+`;
 
+const Row = styled.tr`
+    padding: 0;
     &:nth-child(odd){
         background-color: rgba(0,0,0, 0.05);
     }
-`;
-
-const Header = styled(BaseRow)`
-    padding: 5px 0;
-    background-color: rgba(0,0,0, 0.2);
-    margin-top: 30px;
-    font-weight: bold;
 `;
 
 const Empty = styled.p`
     margin-top: 30px;
 `;
 
-const Col1 = styled(Col)`
-    font-size: 14px;
+const Col = styled.td`
+    font-size: 12px;
+    padding: 5px;
+    line-height: 1;
+`;
+
+const HeaderCol = styled(Col as any)`
     font-weight: bold;
-`;
-
-const Col2 = styled(Col)`
-    font-size: 14px;
-`;
-
-const Col3 = styled(Col)`
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: flex-end;
+    background-color: rgba(0,0,0, 0.2);
 `;
 
 const IconButton = styled(IconBaseButton)`
@@ -67,6 +57,12 @@ const IconButton = styled(IconBaseButton)`
 
 const Button = styled(BaseButton as any)`
     margin-right: 15px;
+`;
+
+const Link = styled(BaseButton as any)`
+    padding: 1px 5px;
+    border-radius: 4px;
+    font-size: 12px;
 `;
 
 const InvoiceList: React.FunctionComponent<Props> = ({invoicePeriodId}) => {
@@ -97,12 +93,23 @@ const InvoiceList: React.FunctionComponent<Props> = ({invoicePeriodId}) => {
         }
     };
 
+    const previewInvoice = (invoice: Invoice) => {
+        window.open('/api/invoice-form/'+ invoice.id, '_blank');
+    };
+
+
+    const importData = () => {
+        window.open('/api/import-data/'+ invoicePeriodId, '_blank');
+    };
+
 
     return (
         <PageContainer>
             <Button onClick={() => newInvoice()}>Novi račun</Button>
 
-            <Button onClick={() => newInvoice()}>Uvozi podatke iz tabele</Button>
+            <Button onClick={() => importData()}>Uvozi podatke iz tabele</Button>
+
+            <h1 style={{marginTop: 25}}>{store.invoicePeriodText}</h1>
 
             {store.invoicesLoading && (
                 <Loading />
@@ -113,40 +120,49 @@ const InvoiceList: React.FunctionComponent<Props> = ({invoicePeriodId}) => {
             )}
 
             { ( !store.invoicesLoading && !!store.invoices.length ) && (
-                <div className="container-fluid">
-                    <Header>
-                        <Col1 sizes={['md-2']}>Ime otroka</Col1>
-                        <Col1 sizes={['md-2']}>Ime starša</Col1>
-                        <Col1 sizes={['md-2']}>Email</Col1>
-                        <Col1 sizes={['md-2']}>Znesek</Col1>
-                        <Col1 sizes={['md-2']}>Referenca</Col1>
-                        <Col3 sizes={['md-2']}>
-                        </Col3>
-                    </Header>
-                { store.invoices.map((invoice: Invoice, i: number) => { return (
-                    <Row key={invoice.id}>
-                        <Col1 sizes={['md-2']}>{invoice.child_name}</Col1>
-                        <Col1 sizes={['md-2']}>{invoice.parent_name}</Col1>
-                        <Col1 sizes={['md-2']}>{invoice.email}</Col1>
-                        <Col1 sizes={['md-2']}>{invoice.price}</Col1>
-                        <Col1 sizes={['md-2']}>{invoice.reference}</Col1>
-                        <Col3 sizes={['md-2']}>
-                            <IconButton 
-                                icon="edit" 
-                                onClick={() => editInvoice(invoice)}
-                                tooltip="bottom"
-                                title="Uredi račun"
-                            ></IconButton>
-                            <IconButton 
-                                icon="delete" 
-                                onClick={() => deleteInvoice(invoice)}
-                                tooltip="bottom"
-                                title="Odstrani račun"
-                            ></IconButton>
-                        </Col3>
-                    </Row>
-                );}) }
-                </div>
+                <Table>
+                    <thead>
+                        <Row>
+                            <HeaderCol>Selekcija</HeaderCol>
+                            <HeaderCol>Ime otroka</HeaderCol>
+                            <HeaderCol>Ime starša</HeaderCol>
+                            <HeaderCol>Email</HeaderCol>
+                            <HeaderCol>Znesek</HeaderCol>
+                            <HeaderCol>Referenca</HeaderCol>
+                            <HeaderCol>
+                            </HeaderCol>
+                        </Row>
+                    </thead>
+                    <tbody>
+                    { store.invoices.map((invoice: Invoice, i: number) => { return (
+                        <Row key={invoice.id}>
+                            <Col>U{invoice.team}</Col>
+                            <Col>U{invoice.child_name}</Col>
+                            <Col>{invoice.parent_name}</Col>
+                            <Col>{invoice.email}</Col>
+                            <Col>{invoice.price}</Col>
+                            <Col>{invoice.reference}</Col>
+                            <Col style={{textAlign: 'right'}}>
+                                <Link onClick={() => previewInvoice(invoice)} >predogled</Link> {" "}
+                                <Link onClick={() => editInvoice(invoice)} >uredi</Link> {" "}
+                                <Link onClick={() => deleteInvoice(invoice)} >odstrani</Link> {" "}
+                                {/* <IconButton 
+                                    icon="edit" 
+                                    onClick={() => editInvoice(invoice)}
+                                    tooltip="bottom"
+                                    title="Uredi račun"
+                                ></IconButton>
+                                <IconButton 
+                                    icon="delete" 
+                                    onClick={() => deleteInvoice(invoice)}
+                                    tooltip="bottom"
+                                    title="Odstrani račun"
+                                ></IconButton> */}
+                            </Col>
+                        </Row>
+                    );}) }
+                    </tbody>
+                </Table>
             )}
 
             {isOpenSidebar && (

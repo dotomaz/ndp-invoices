@@ -16,3 +16,7 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::get('/login', 'ApiController@loginAction');
+Route::get('/import-data/{periodId}', 'ApiController@importDataAction');
+Route::get('/invoice-form/{invoiceId}', 'ApiController@invoiceFormAction');

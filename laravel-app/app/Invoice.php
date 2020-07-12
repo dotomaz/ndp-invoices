@@ -16,6 +16,7 @@ class Invoice extends Model
         'period_id',
         'parent_name',
         'child_name',
+        'team',
         'email',
         'address',
         'city',

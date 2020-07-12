@@ -21,6 +21,7 @@ class UpdateInvoice extends BaseService<any> {
                     period_id: invoice.period_id,
                     parent_name: invoice.parent_name,
                     child_name: invoice.child_name,
+                    team: invoice.team,
                     email: invoice.child_name,
                     address: invoice.address,
                     city: invoice.city,

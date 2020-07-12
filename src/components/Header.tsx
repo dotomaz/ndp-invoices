@@ -6,6 +6,8 @@ import { ReactComponent as IconHotel } from '../svg/hotel.svg';
 import Row from './Row';
 import Col from './Col';
 
+import logo from '../svg/ndp-logo.png';
+
 interface Props {
 
 }
@@ -53,13 +55,17 @@ const Title = styled.div`
     margin-left: 15px;
 `;
 
+const Logo = styled.img`
+    width: 80px;
+`;
+
 const HeaderComponent: React.FunctionComponent<Props> = (props) => {
 
     return (
         <Header>
             <Container>
                 <Col1 sizes={['md-6']}>
-                    <StyledIconHotel/>
+                    <Logo src={logo} />
                     <Title>NDP POLOŽNICE</Title>
                 </Col1>
                 <Col2 sizes={['md-6']}>

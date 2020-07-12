@@ -51,7 +51,7 @@ const IconButtonComponent: FunctionComponent<Props> = (props) => {
     return (
         <>
             { !!props.tooltip && (
-                <div style={{display: 'flex'}} className={props.className}>
+                <span style={{display: 'flex'}} className={props.className}>
                     <OverlayTrigger
                         key={key}
                         placement="bottom"
@@ -65,7 +65,7 @@ const IconButtonComponent: FunctionComponent<Props> = (props) => {
                             {getIcon(props.icon)}
                         </Button>
                     </OverlayTrigger>
-                </div>
+                </span>
             )}
 
             { !props.tooltip && (

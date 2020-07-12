@@ -25,6 +25,7 @@ class CreateInvoiceTable extends Migration
             $table->unsignedBigInteger('period_id');
             $table->string('parent_name')->nullable();
             $table->string('child_name',255)->nullable();
+            $table->smallInteger('team')->default(0);
             $table->string('email',255)->nullable();
             $table->string('address',255)->nullable();
             $table->string('city',255)->nullable();

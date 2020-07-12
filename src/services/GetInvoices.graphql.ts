@@ -16,6 +16,7 @@ class GetInvoices extends BaseService<any> {
                 }
                 parent_name
                 child_name
+                team
                 email
                 address
                 city

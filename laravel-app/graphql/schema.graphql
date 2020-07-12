@@ -33,6 +33,7 @@ type Invoice {
     period: InvoicePeriod @belongsTo
     parent_name: String
     child_name: String
+    team: Int
     email: String
     address: String
     city: String
@@ -52,6 +53,7 @@ input InvoiceInput {
     period_id: Int
     parent_name: String
     child_name: String
+    team: Int
     email: String
     address: String
     city: String

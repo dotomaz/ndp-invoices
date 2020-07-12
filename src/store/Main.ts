@@ -18,14 +18,7 @@ import { Invoice } from '../types/Invoice.interface';
 const today = new Date();
 
 export class MainStore {
-    company = {
-        title: 'Nogometno društvo Polzela',
-        address: 'Polzela 126',
-        postalCode: 3313,
-        city: 'Polzela',
-        taxNumber: '90383524',
-        accountNumber: 'SI56 0600 0010 0088 003',
-    }
+    months = ['januar','februar', 'marec', 'april', 'maj', 'junij', 'julij', 'avgust', 'september', 'oktober', 'november', 'december'];
     invoicePeriodsLoading = false;
     invoicePeriodsLoaded = false;
     invoicePeriod: InvoicePeriod = {
@@ -66,6 +59,10 @@ export class MainStore {
             month: today.getMonth()+1,
             year: today.getFullYear(),
         };
+    }
+
+    get invoicePeriodText() {
+        return this.months[this.invoicePeriod.month-1] +" "+ this.invoicePeriod.year;
     }
 
     async getInvoicePeriods(page: number){
@@ -137,6 +134,7 @@ export class MainStore {
         period_id: this.invoicePeriod.id,
         parent_name: '',
         child_name: '',
+        team: 7,
         email: '',
         address: '',
         city: '',
@@ -153,6 +151,7 @@ export class MainStore {
             period_id: this.invoicePeriod.id,
             parent_name: '',
             child_name: '',
+            team: 7,
             email: '',
             address: '',
             city: '',
@@ -207,6 +206,7 @@ export class MainStore {
             period: invoice.period,
             parent_name: invoice.parent_name,
             child_name: invoice.child_name,
+            team: invoice.team,
             email: invoice.email,
             address: invoice.address,
             city: invoice.city,
@@ -234,6 +234,7 @@ export class MainStore {
             case 'period_id': this.invoice.period_id = +value; break;
             case 'parent_name': this.invoice.parent_name = `${value}`; break;
             case 'child_name': this.invoice.child_name = `${value}`; break;
+            case 'team': this.invoice.team = +value; break;
             case 'email': this.invoice.email = `${value}`; break;
             case 'address': this.invoice.address = `${value}`; break;
             case 'city': this.invoice.city = `${value}`; break;

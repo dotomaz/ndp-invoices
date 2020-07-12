@@ -6,6 +6,7 @@ export interface Invoice {
     period?: InvoicePeriod;
     parent_name: string;
     child_name: string;
+    team: number;
     email: string;
     address: string;
     city: string;
