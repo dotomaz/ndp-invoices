@@ -13,7 +13,7 @@ class GoogleSheets {
      */
     public function getClient()
     {
-        $redirect_uri = 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+        $redirect_uri = $_SERVER['REQUEST_SCHEME']. '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
         if( strpos($redirect_uri, '?') !== false ) {
             $redirect_uri = substr($redirect_uri, 0, strpos($redirect_uri, '?') );
         }

@@ -33,7 +33,7 @@ class ApiController extends Controller
             $importer = new \App\Lib\Importer();
             $importer->process($periodId);
         }catch (\App\Lib\GoogleSheetAuthException $ex) {
-            $redirect_uri = 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+            $redirect_uri = $_SERVER['REQUEST_SCHEME']. '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
             session(['local_redirect_url', $redirect_uri]);
             return redirect('/api/login');
         }
