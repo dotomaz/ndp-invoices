@@ -137,7 +137,6 @@ const InvoiceList: React.FunctionComponent<Props> = ({invoicePeriodId}) => {
                     { store.invoices.map((invoice: Invoice, i: number) => { return (
                         <Row key={invoice.id}>
                             <Col>U{invoice.team}</Col>
-                            <Col>U{invoice.child_name}</Col>
                             <Col>{invoice.parent_name}</Col>
                             <Col>{invoice.email}</Col>
                             <Col>{invoice.price}</Col>
