@@ -2,10 +2,7 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
-// use App\TravelOrder;
-// use App\Observers\TravelOrderObserver;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -27,7 +24,5 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         //
-        // TravelOrder::observe(TravelOrderObserver::class);
-        Schema::defaultStringLength(191);
     }
 }

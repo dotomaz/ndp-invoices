@@ -43,7 +43,7 @@ class InvoiceForm {
 
         $black = $image->palette()->color("000");
         $font = $imagine->font(storage_path('app/courbd.ttf'), 17, $black);
-        $font2 = $imagine->font(storage_path('app/courbd.ttf'), 14, $black);
+        $font2 = $imagine->font(storage_path('app/cour.ttf'), 14, $black);
 
         $image->paste($qrCodeImage, new Point(525, 60));
 

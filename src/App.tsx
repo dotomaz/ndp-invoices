@@ -4,6 +4,7 @@ import { Router } from "@reach/router";
 import { MainStoreContext, MainStore } from './store/Main';
 import InvoicePeriodList from './InvoicePeriodList';
 import InvoiceList from './InvoiceList';
+import Login from './Login';
 
 function App() {
     return (
@@ -11,6 +12,7 @@ function App() {
             <Router>
                 <InvoicePeriodList path="/" />
                 <InvoiceList path="period/:invoicePeriodId" />
+                <Login path="/prijava" />
             </Router>
         </MainStoreContext.Provider>
 

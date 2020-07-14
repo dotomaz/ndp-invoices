@@ -1,7 +1,8 @@
 import { createContext } from 'react';
 import { decorate, observable, computed } from 'mobx';
-import { format } from 'date-fns';
+import { navigate } from "@reach/router";
 
+import {Login as AuthLogin} from '../services/AuthService';
 import AddInvoicePeriod from '../services/AddInvoicePeriod.graphql';
 import AddInvoice from '../services/AddInvoice.graphql';
 import DeleteInvoicePeriod from '../services/DeleteInvoicePeriod.graphql';
@@ -14,10 +15,12 @@ import InitService from '../services/Init.graphql';
 import LoadInvoice from '../services/LoadInvoice.graphql';
 import { InvoicePeriod } from '../types/InvoicePeriod.interface';
 import { Invoice } from '../types/Invoice.interface';
+import { assertValidExecutionArguments } from 'graphql/execution/execute';
 
 const today = new Date();
 
 export class MainStore {
+    token = "";
     months = ['januar','februar', 'marec', 'april', 'maj', 'junij', 'julij', 'avgust', 'september', 'oktober', 'november', 'december'];
     invoicePeriodsLoading = false;
     invoicePeriodsLoaded = false;
@@ -38,13 +41,27 @@ export class MainStore {
         this.newInvoice();
     }
 
+    async Login(email:string, password:string){
+        try{
+            const jwt = await AuthLogin(email, password);
+            this.token = jwt?.access_token ?? '';
+
+            if (!!this.token.length) {
+                navigate('/');
+            }
+
+        }catch(e){
+            alert('Prijava ni uspela!');
+        }
+    }
+
     async Init(){
-        const service = new InitService("");
+        const service = new InitService(this.token);
 
         this.invoicePeriodsLoading = true;
         try{
-            const {invoice_periods} = await service.fetch(1);
-            this.invoicePeriods = this.mapInvoicePeriods(invoice_periods);
+            const data = await service.fetch(1);
+            this.invoicePeriods = this.mapInvoicePeriods(data?.invoice_periods);
             
             this.invoicePeriodsLoading = false;
             this.invoicePeriodsLoaded = true;
@@ -66,7 +83,7 @@ export class MainStore {
     }
 
     async getInvoicePeriods(page: number){
-        const service = new GetInvoicePeriods("");
+        const service = new GetInvoicePeriods(this.token);
 
         this.invoicePeriodsLoading = true;
         try{
@@ -97,20 +114,24 @@ export class MainStore {
     }
 
     saveInvoicePeriod(){
-        const service = ( !!this.invoicePeriod.id ) ? new UpdateInvoicePeriod("") : new AddInvoicePeriod("");
+        const service = ( !!this.invoicePeriod.id ) ? new UpdateInvoicePeriod(this.token) : new AddInvoicePeriod(this.token);
         return service.mutate(this.invoicePeriod);
     }
 
     deleteInvoicePeriod(id: number){
-        const service = new DeleteInvoicePeriod("");
+        const service = new DeleteInvoicePeriod(this.token);
         return service.mutate(id);
     }
 
-    setUserParameter(name: string, value: string){
+    setInvoicePeriodParameter(name: string, value: string){
+        const val = parseInt(value,10);
+
+        if(isNaN(val)) return;
+
         switch(name){
-            case 'id': this.invoicePeriod.id = parseInt(value,10); break;
-            case 'month': this.invoicePeriod.month = parseInt(value,10); break;
-            case 'year':this.invoicePeriod.year = parseInt(value,10); break;
+            case 'id': this.invoicePeriod.id = val; break;
+            case 'month': this.invoicePeriod.month = val; break;
+            case 'year':this.invoicePeriod.year = val; break;
         }
     }
     
@@ -164,7 +185,7 @@ export class MainStore {
 
 
     async getInvoices(periodId: number, page: number){
-        const service = new GetInvoices("");
+        const service = new GetInvoices(this.token);
 
         this.invoicesLoading = true;
         try{
@@ -181,7 +202,7 @@ export class MainStore {
     invoiceLoading = false;
     invoiceLoaded = false;
     async loadInvoice(id: number){
-        const service = new LoadInvoice("");
+        const service = new LoadInvoice(this.token);
 
         this.invoiceLoading = true;
         try{
@@ -219,12 +240,12 @@ export class MainStore {
     }
 
     saveInvoice(){
-        const service = ( !!this.invoice.id ) ? new UpdateInvoice("") : new AddInvoice("");
+        const service = ( !!this.invoice.id ) ? new UpdateInvoice(this.token) : new AddInvoice(this.token);
         return service.mutate(this.invoice);
     }
 
     deleteInvoice(id: number){
-        const service = new DeleteInvoice("");
+        const service = new DeleteInvoice(this.token);
         return service.mutate(id);
     }
 

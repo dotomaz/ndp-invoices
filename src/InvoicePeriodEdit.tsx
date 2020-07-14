@@ -28,7 +28,7 @@ const InvoicePeriodEdit: React.FunctionComponent<Props> = (props) => {
     })
 
     const onChange = (name: string, value: string) => {
-        store.setUserParameter(name, value);
+        store.setInvoicePeriodParameter(name, value);
         props.isValid && props.isValid(store.invoicePeriodIsValid());
     };
 

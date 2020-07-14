@@ -23,7 +23,9 @@ class ApiController extends Controller
             }
 
         }catch (\App\Lib\GoogleSheetAuthException $ex) {
-            return redirect($ex->getMessage());
+            dump($request->session()->all());
+            echo '<a href="'.$ex->getMessage().'">Login</a>';
+            // return redirect($ex->getMessage());
         }
     }
 

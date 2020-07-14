@@ -1,6 +1,7 @@
 import gql from "graphql-tag";
 import BaseService from './BaseService';
 import { DeleteInvoiceMutationMutation, DeleteInvoiceMutationMutationVariables } from '../generated/graphql';
+import { navigate } from "@reach/router";
 
 class DeleteInvoice extends BaseService<any> {
     query = gql`
@@ -18,7 +19,8 @@ class DeleteInvoice extends BaseService<any> {
                 id: `${id}`,
             },
         })
-            .then(result => result?.data?.deleteInvoice);
+            .then(result => result?.data?.deleteInvoice)
+            .catch(() => navigate('/prijava'));
     }
 }
 

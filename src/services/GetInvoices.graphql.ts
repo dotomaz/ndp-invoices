@@ -1,6 +1,7 @@
 import gql from "graphql-tag";
 import BaseService from './BaseService';
 import { GetInvoicesQuery, GetInvoicesQueryVariables } from '../generated/graphql';
+import { navigate } from "@reach/router";
 
 class GetInvoices extends BaseService<any> {
 
@@ -37,7 +38,8 @@ class GetInvoices extends BaseService<any> {
             query: this.query,
             variables: { periodId, page },
         })
-            .then(result => result?.data?.invoices_per_period?.data);
+            .then(result => result?.data?.invoices_per_period?.data)
+            .catch(() => navigate('/prijava'));
     }
 }
 

@@ -4,7 +4,7 @@ scalar DateTime @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\Date
 "A date string with format `Y-m-d`, e.g. `2011-05-23`."
 scalar Date @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\Date")
 
-type Query {
+extend type Query @guard(with: ["api"]) {
     invoice_periods: [InvoicePeriod!]! @paginate(type: "paginator" model: "App\\InvoicePeriod")
     invoice_period(id: ID @eq): InvoicePeriod @find(model: "App\\InvoicePeriod")
     invoices: [Invoice!]! @paginate(type: "paginator" model: "App\\Invoice")
@@ -12,7 +12,7 @@ type Query {
     invoice(id: ID @eq): Invoice @find(model: "App\\Invoice")
 }
 
-type Mutation {
+extend type Mutation @guard(with: ["api"]) {
     createInvoicePeriod(input: InvoicePeriodInput! @spread): InvoicePeriod @create
     updateInvoicePeriod(id: ID!, input: InvoicePeriodInput! @spread): InvoicePeriod @update
     deleteInvoicePeriod(id: ID!): InvoicePeriod @delete
