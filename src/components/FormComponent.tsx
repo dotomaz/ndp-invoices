@@ -13,6 +13,7 @@ interface Props {
     value?: string;
     values?: { id: string, value: string }[];
     onChange?: Function;
+    onKeyPress?: Function;
 }
 
 const Section = styled.div`
@@ -85,6 +86,18 @@ const FormComponent: React.FunctionComponent<Props> = (props) => {
                         className="form-control"
                         disabled={props.disabled || false}
                         onChange={(event: React.FormEvent<HTMLInputElement>) => onChange(event)}
+                        onKeyPress={(event: React.FormEvent<HTMLInputElement>) => props.onKeyPress?.(event)}
+                    />
+                )}
+
+                {props.type === 'password' && (
+                    <InputComponent
+                        type="password"
+                        value={props.value}
+                        className="form-control"
+                        disabled={props.disabled || false}
+                        onChange={(event: React.FormEvent<HTMLInputElement>) => onChange(event)}
+                        onKeyPress={(event: React.FormEvent<HTMLInputElement>) => props.onKeyPress?.(event)}
                     />
                 )}
 

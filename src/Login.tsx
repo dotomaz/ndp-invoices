@@ -15,8 +15,17 @@ interface Props {
 
 const Container = styled.div`
     padding: 10px 25px;
+    margin: 30px auto;
+    max-width: 500px;
+    background-color: #eee;
+    border-radius: 4px;
 `;
 
+const ButtonContainer = styled.div`
+    text-align: center;
+    margin-top: 30px;
+    margin-bottom: 30px;
+`;
 const Title = styled.h2`
     margin-bottom: 50px;
 `;
@@ -35,19 +44,26 @@ const InvoicePeriodEdit: React.FunctionComponent<Props> = (props) => {
             <Title>Prijava</Title>
             <FormComponent 
                 type="input" 
-                name="Leto"
+                name="E-mail"
                 required
                 value={`${email}`} 
                 onChange={(value: string)=> setEmail(value)} 
             />
             <FormComponent 
-                type="input" 
-                name="Mesec"
+                type="password" 
+                name="Geslo"
                 required
                 value={`${password}`} 
-                onChange={(value: string)=> setPassword(value)} 
+                onChange={(value: string)=> setPassword(value)}
+                onKeyPress={(ev:any) => {
+                    if (ev.key === 'Enter') {
+                        Login();
+                    }
+                }}
             />
-            <BaseButton onClick={()=>Login()}>Prijava</BaseButton>
+            <ButtonContainer>
+                <BaseButton onClick={()=>Login()}>Prijava</BaseButton>
+            </ButtonContainer>
         </Container>
     );
 };

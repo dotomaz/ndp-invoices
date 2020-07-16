@@ -1,7 +1,6 @@
 import React, { useContext } from 'react';
 import styled from 'styled-components';
 import { observer } from 'mobx-react-lite';
-import { format } from 'date-fns';
 
 import FormComponent from './components/FormComponent';
 
@@ -20,10 +19,6 @@ const Container = styled.div`
 
 const Title = styled.h3`
     margin-bottom: 50px;
-`;
-
-const Title2 = styled.h4`
-    margin-bottom: 25px;
 `;
 
 const InvoiceEdit: React.FunctionComponent<Props> = (props) => {

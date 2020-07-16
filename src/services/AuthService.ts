@@ -1,7 +1,7 @@
+import { getHost } from './Host';
 
-const host = `https://localhost`;
-const loginUrl = `${host}/api/auth/login`;
-const refreshUrl = `${host}/api/auth/refresh`;
+const loginUrl = `${getHost()}/api/auth/login`;
+// const refreshUrl = `${getHost()}/api/auth/refresh`;
 
 export interface JWTResponse {
     access_token: string;

@@ -2,7 +2,6 @@ import gql from "graphql-tag";
 import BaseService from './BaseService';
 import { UpdateInvoiceMutation, UpdateInvoiceMutationVariables } from '../generated/graphql';
 import { Invoice } from '../types/Invoice.interface';
-import { navigate } from "@reach/router";
 
 class UpdateInvoice extends BaseService<any> {
     query = gql`
@@ -34,8 +33,7 @@ class UpdateInvoice extends BaseService<any> {
                 }
             },
         })
-            .then(result => result?.data?.updateInvoice )
-            .catch(() => navigate('/prijava'));
+            .then(result => result?.data?.updateInvoice );
     }
 }
 

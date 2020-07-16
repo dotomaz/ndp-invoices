@@ -2,7 +2,6 @@ import React from 'react';
 import styled from 'styled-components';
 import { Link } from "@reach/router";
 
-import { ReactComponent as IconHotel } from '../svg/hotel.svg';
 import Row from './Row';
 import Col from './Col';
 
@@ -37,14 +36,6 @@ const Col2 = styled(Col)`
     a{
         color: #111111;
         margin-left: 30px;
-    }
-`;
-
-const StyledIconHotel = styled(IconHotel)`
-    height: 48px;
-
-    path{
-        fill: #F0533E;
     }
 `;
 

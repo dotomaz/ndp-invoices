@@ -1,7 +1,8 @@
 import { createContext } from 'react';
-import { decorate, observable, computed } from 'mobx';
+import { decorate, observable } from 'mobx';
 import { navigate } from "@reach/router";
 
+import { getAccessToken, setAccessToken } from './Storage';
 import {Login as AuthLogin} from '../services/AuthService';
 import AddInvoicePeriod from '../services/AddInvoicePeriod.graphql';
 import AddInvoice from '../services/AddInvoice.graphql';
@@ -15,12 +16,10 @@ import InitService from '../services/Init.graphql';
 import LoadInvoice from '../services/LoadInvoice.graphql';
 import { InvoicePeriod } from '../types/InvoicePeriod.interface';
 import { Invoice } from '../types/Invoice.interface';
-import { assertValidExecutionArguments } from 'graphql/execution/execute';
 
 const today = new Date();
 
 export class MainStore {
-    token = "";
     months = ['januar','februar', 'marec', 'april', 'maj', 'junij', 'julij', 'avgust', 'september', 'oktober', 'november', 'december'];
     invoicePeriodsLoading = false;
     invoicePeriodsLoaded = false;
@@ -39,14 +38,18 @@ export class MainStore {
 
         this.newInvoicePeriod();
         this.newInvoice();
+
+        if (!getAccessToken()) {
+            navigate('/prijava');
+        }
     }
 
     async Login(email:string, password:string){
         try{
             const jwt = await AuthLogin(email, password);
-            this.token = jwt?.access_token ?? '';
+            setAccessToken(jwt?.access_token ?? '', jwt?.expires_in ?? 0);
 
-            if (!!this.token.length) {
+            if (!!jwt?.access_token?.length) {
                 navigate('/');
             }
 
@@ -56,7 +59,7 @@ export class MainStore {
     }
 
     async Init(){
-        const service = new InitService(this.token);
+        const service = new InitService();
 
         this.invoicePeriodsLoading = true;
         try{
@@ -83,7 +86,7 @@ export class MainStore {
     }
 
     async getInvoicePeriods(page: number){
-        const service = new GetInvoicePeriods(this.token);
+        const service = new GetInvoicePeriods();
 
         this.invoicePeriodsLoading = true;
         try{
@@ -114,12 +117,12 @@ export class MainStore {
     }
 
     saveInvoicePeriod(){
-        const service = ( !!this.invoicePeriod.id ) ? new UpdateInvoicePeriod(this.token) : new AddInvoicePeriod(this.token);
+        const service = ( !!this.invoicePeriod.id ) ? new UpdateInvoicePeriod() : new AddInvoicePeriod();
         return service.mutate(this.invoicePeriod);
     }
 
     deleteInvoicePeriod(id: number){
-        const service = new DeleteInvoicePeriod(this.token);
+        const service = new DeleteInvoicePeriod();
         return service.mutate(id);
     }
 
@@ -185,7 +188,7 @@ export class MainStore {
 
 
     async getInvoices(periodId: number, page: number){
-        const service = new GetInvoices(this.token);
+        const service = new GetInvoices();
 
         this.invoicesLoading = true;
         try{
@@ -202,7 +205,7 @@ export class MainStore {
     invoiceLoading = false;
     invoiceLoaded = false;
     async loadInvoice(id: number){
-        const service = new LoadInvoice(this.token);
+        const service = new LoadInvoice();
 
         this.invoiceLoading = true;
         try{
@@ -240,12 +243,12 @@ export class MainStore {
     }
 
     saveInvoice(){
-        const service = ( !!this.invoice.id ) ? new UpdateInvoice(this.token) : new AddInvoice(this.token);
+        const service = ( !!this.invoice.id ) ? new UpdateInvoice() : new AddInvoice();
         return service.mutate(this.invoice);
     }
 
     deleteInvoice(id: number){
-        const service = new DeleteInvoice(this.token);
+        const service = new DeleteInvoice();
         return service.mutate(id);
     }
 

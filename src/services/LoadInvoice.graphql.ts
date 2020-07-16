@@ -1,7 +1,6 @@
 import gql from "graphql-tag";
 import BaseService from './BaseService';
 import { LoadInvoiceQuery, LoadInvoiceQueryVariables } from '../generated/graphql';
-import { navigate } from "@reach/router";
 
 class GetUsers extends BaseService<any> {
 
@@ -35,8 +34,7 @@ class GetUsers extends BaseService<any> {
             query: this.query,
             variables: { id: `${id}` },
         })
-            .then(result => result?.data?.invoice)
-            .catch(() => navigate('/prijava'));
+            .then(result => result?.data?.invoice);
     }
 }
 

@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import styled from 'styled-components';
 import { observer } from 'mobx-react-lite';
 import { Link } from '@reach/router'
@@ -42,9 +42,6 @@ const Col1 = styled(Col)`
 
 `;
 
-const Col2 = styled(Col)`
-
-`;
 
 const Col3 = styled(Col)`
     display: flex;
@@ -67,6 +64,10 @@ const Button = styled(BaseButton as any)`
 const InvoicePeriodList: React.FunctionComponent<Props> = () => {
     const store = useContext(MainStoreContext);
     const [isOpenSidebar, setIsOpenSidebar] = useState<boolean>(false);
+
+    useEffect(() => {
+        store.getInvoicePeriods(1);
+    }, []);
 
     const editInvoicePeriod = (invoicePeriod: InvoicePeriod) => {
         store.invoicePeriod = {...invoicePeriod};

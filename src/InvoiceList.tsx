@@ -1,5 +1,4 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { navigate } from "@reach/router"
 import styled from 'styled-components';
 import { observer } from 'mobx-react-lite';
 
@@ -7,7 +6,6 @@ import { Invoice } from './types/Invoice.interface';
 
 import PageContainer from './components/PageContainer';
 import BaseButton from './components/Button';
-import IconBaseButton from './components/IconButton';
 import Loading from './components/Loading';
 import Sidebar from './components/Sidebar';
 import InvoiceEdit from './InvoiceEdit';
@@ -44,15 +42,6 @@ const Col = styled.td`
 const HeaderCol = styled(Col as any)`
     font-weight: bold;
     background-color: rgba(0,0,0, 0.2);
-`;
-
-const IconButton = styled(IconBaseButton)`
-    margin-left: 5px;
-    font-size: 20px;
-
-    &:first-child{
-        margin-left: 0px;
-    }
 `;
 
 const Button = styled(BaseButton as any)`
@@ -146,18 +135,6 @@ const InvoiceList: React.FunctionComponent<Props> = ({invoicePeriodId}) => {
                                 <Link onClick={() => previewInvoice(invoice)} >predogled</Link> {" "}
                                 <Link onClick={() => editInvoice(invoice)} >uredi</Link> {" "}
                                 <Link onClick={() => deleteInvoice(invoice)} >odstrani</Link> {" "}
-                                {/* <IconButton 
-                                    icon="edit" 
-                                    onClick={() => editInvoice(invoice)}
-                                    tooltip="bottom"
-                                    title="Uredi račun"
-                                ></IconButton>
-                                <IconButton 
-                                    icon="delete" 
-                                    onClick={() => deleteInvoice(invoice)}
-                                    tooltip="bottom"
-                                    title="Odstrani račun"
-                                ></IconButton> */}
                             </Col>
                         </Row>
                     );}) }
