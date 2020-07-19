@@ -16,7 +16,7 @@ class InvoiceForm {
         echo $this->makeImage($invoice);
     }
 
-    private function makeImage($invoice) {
+    public function makeImage($invoice) {
         $data = [
             'iban' => 'SI56 0510 0801 5399 5187',
             'znesek' => "***". number_format($invoice['price'],2, ',', '.'),

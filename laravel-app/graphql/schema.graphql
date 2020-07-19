@@ -12,13 +12,21 @@ extend type Query @guard(with: ["api"]) {
     invoice(id: ID @eq): Invoice @find(model: "App\\Invoice")
 }
 
-extend type Mutation @guard(with: ["api"]) {
+type Mutation {
+# extend type Mutation @guard(with: ["api"]) {
     createInvoicePeriod(input: InvoicePeriodInput! @spread): InvoicePeriod @create
     updateInvoicePeriod(id: ID!, input: InvoicePeriodInput! @spread): InvoicePeriod @update
     deleteInvoicePeriod(id: ID!): InvoicePeriod @delete
     createInvoice(input: InvoiceInput! @spread): Invoice @create
     updateInvoice(id: ID!, input: InvoiceInput! @spread): Invoice @update
     deleteInvoice(id: ID!): Invoice @delete
+    sendEmailToInvoice(id: ID!): Response
+    sendEmailsToInvoicePeriod(id: ID!): Response
+}
+
+type Response {
+    success: Int!
+    message: String
 }
 
 type InvoicePeriod {
@@ -40,6 +48,7 @@ type Invoice {
     price: Float
     discount: Float
     reference: String
+    should_send: Int
     sent: Int
     sent_date: DateTime 
 }
@@ -60,6 +69,7 @@ input InvoiceInput {
     price: Float
     discount: Float
     reference: String
+    should_send: Int
     sent: Int
     sent_date: DateTime 
 }

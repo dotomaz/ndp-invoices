@@ -32,6 +32,7 @@ class CreateInvoiceTable extends Migration
             $table->double('price',8,2)->default(0);
             $table->double('discount',8,2)->default(0);
             $table->string('reference',255)->nullable();
+            $table->smallInteger('should_send')->default(0);
             $table->smallInteger('sent')->default(0);
             $table->timestamp('sent_date')->nullable();
             $table->timestamps();

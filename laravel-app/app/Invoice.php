@@ -23,6 +23,7 @@ class Invoice extends Model
         'price',
         'discount',
         'reference',
+        'should_send',
         'sent',
         'sent_date',
     ];

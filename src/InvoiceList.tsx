@@ -82,6 +82,22 @@ const InvoiceList: React.FunctionComponent<Props> = ({invoicePeriodId}) => {
         }
     };
 
+    const sendInvoice = (invoice: Invoice) => {
+        if(window.confirm('Ali ste prepričani, da želite poslati to položnico na '+ invoice.email +'?')){
+            store.sendInvoice(invoice).then(() => {
+                window.alert("Položnica je bila poslana.")
+            });
+        }
+    };
+
+    const sendAllInvoices = () => {
+        if(window.confirm('Ali ste prepričani, da želite poslati vse položnice?')){
+            store.sendAllInvoices(invoicePeriodId || 0).then(() => {
+                window.alert("Položnice so bile poslane.")
+            });
+        }
+    };
+
     const previewInvoice = (invoice: Invoice) => {
         window.open('/api/invoice-form/'+ invoice.id, '_blank');
     };
@@ -97,6 +113,8 @@ const InvoiceList: React.FunctionComponent<Props> = ({invoicePeriodId}) => {
             <Button onClick={() => newInvoice()}>Novi račun</Button>
 
             <Button onClick={() => importData()}>Uvozi podatke iz tabele</Button>
+
+            <Button onClick={() => sendAllInvoices()}>Pošlji položnice na email</Button>
 
             <h1 style={{marginTop: 25}}>{store.invoicePeriodText}</h1>
 
@@ -132,6 +150,7 @@ const InvoiceList: React.FunctionComponent<Props> = ({invoicePeriodId}) => {
                             <Col>{invoice.price}€</Col>
                             <Col>{invoice.reference}</Col>
                             <Col style={{textAlign: 'right'}}>
+                                <Link onClick={() => sendInvoice(invoice)} >pošlji</Link> {" "}
                                 <Link onClick={() => previewInvoice(invoice)} >predogled</Link> {" "}
                                 <Link onClick={() => editInvoice(invoice)} >uredi</Link> {" "}
                                 <Link onClick={() => deleteInvoice(invoice)} >odstrani</Link> {" "}

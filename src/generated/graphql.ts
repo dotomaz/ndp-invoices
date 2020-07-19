@@ -111,6 +111,7 @@ export type Invoice = {
   price?: Maybe<Scalars['Float']>;
   discount?: Maybe<Scalars['Float']>;
   reference?: Maybe<Scalars['String']>;
+  should_send?: Maybe<Scalars['Int']>;
   sent?: Maybe<Scalars['Int']>;
   sent_date?: Maybe<Scalars['DateTime']>;
 };
@@ -124,6 +125,8 @@ export type Mutation = {
   createInvoice?: Maybe<Invoice>;
   updateInvoice?: Maybe<Invoice>;
   deleteInvoice?: Maybe<Invoice>;
+  sendEmailToInvoice?: Maybe<Response>;
+  sendEmailsToInvoicePeriod?: Maybe<Response>;
 };
 
 
@@ -158,6 +161,16 @@ export type MutationDeleteInvoiceArgs = {
   id: Scalars['ID'];
 };
 
+
+export type MutationSendEmailToInvoiceArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type MutationSendEmailsToInvoicePeriodArgs = {
+  id: Scalars['ID'];
+};
+
 export type InvoicePeriodInput = {
   month?: Maybe<Scalars['Int']>;
   year?: Maybe<Scalars['Int']>;
@@ -174,8 +187,15 @@ export type InvoiceInput = {
   price?: Maybe<Scalars['Float']>;
   discount?: Maybe<Scalars['Float']>;
   reference?: Maybe<Scalars['String']>;
+  should_send?: Maybe<Scalars['Int']>;
   sent?: Maybe<Scalars['Int']>;
   sent_date?: Maybe<Scalars['DateTime']>;
+};
+
+export type Response = {
+  __typename?: 'Response';
+  success: Scalars['Int'];
+  message?: Maybe<Scalars['String']>;
 };
 
 
@@ -345,6 +365,32 @@ export type LoadInvoiceQuery = (
       { __typename?: 'InvoicePeriod' }
       & Pick<InvoicePeriod, 'id' | 'month' | 'year'>
     )> }
+  )> }
+);
+
+export type SendEmailsToInvoicePeriodMutationVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type SendEmailsToInvoicePeriodMutation = (
+  { __typename?: 'Mutation' }
+  & { sendEmailsToInvoicePeriod?: Maybe<(
+    { __typename?: 'Response' }
+    & Pick<Response, 'success' | 'message'>
+  )> }
+);
+
+export type SendEmailToInvoiceMutationVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type SendEmailToInvoiceMutation = (
+  { __typename?: 'Mutation' }
+  & { sendEmailToInvoice?: Maybe<(
+    { __typename?: 'Response' }
+    & Pick<Response, 'success' | 'message'>
   )> }
 );
 

@@ -21,7 +21,8 @@ RUN apt-get update && apt-get install -y \
     vim \
     unzip \
     git \
-    curl 
+    curl \
+    cron
 
 RUN pecl install memcached-3.1.5
 

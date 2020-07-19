@@ -14,6 +14,9 @@ import GetInvoices from '../services/GetInvoices.graphql';
 import GetInvoicePeriods from '../services/GetInvoicePeriods.graphql';
 import InitService from '../services/Init.graphql';
 import LoadInvoice from '../services/LoadInvoice.graphql';
+import SendEmailsToInvoicePeriod from '../services/SendEmailsToInvoicePeriod.graphql';
+import SendInvoiceEmail from '../services/SendInvoiceEmail.graphql'
+
 import { InvoicePeriod } from '../types/InvoicePeriod.interface';
 import { Invoice } from '../types/Invoice.interface';
 
@@ -165,6 +168,7 @@ export class MainStore {
         price: 0,
         discount: 0,
         reference: '',
+        should_send: false,
         sent: false,
     };
     invoices: Invoice[] = [];
@@ -182,6 +186,7 @@ export class MainStore {
             price: 0,
             discount: 0,
             reference: '',
+            should_send: false,
             sent: false,
         };
     }
@@ -237,6 +242,7 @@ export class MainStore {
             price: invoice.price,
             discount: invoice.discount,
             reference: invoice.reference,
+            should_send: invoice.should_send,
             sent: invoice.sent,
             sent_date: invoice.sent_date,
         };
@@ -252,6 +258,16 @@ export class MainStore {
         return service.mutate(id);
     }
 
+    sendInvoice(invoice: Invoice){
+        const service = new SendInvoiceEmail();
+        return service.mutate(invoice);
+    }
+
+    sendAllInvoices(periodId: number){
+        const service = new SendEmailsToInvoicePeriod();
+        return service.mutate(periodId);
+    }
+
     setInvoiceParameter(name: string, value: string | number | boolean){
         switch(name){
             case 'id': this.invoice.id = +value; break;
@@ -265,6 +281,7 @@ export class MainStore {
             case 'price': this.invoice.price = +value; break;
             case 'discount': this.invoice.discount = +value; break;
             case 'reference': this.invoice.reference = `${value}`; break;
+            case 'sent': this.invoice.should_send = !!value; break;
             case 'sent': this.invoice.sent = !!value; break;
         }
         

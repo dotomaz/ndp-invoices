@@ -13,6 +13,7 @@ export interface Invoice {
     price: number;
     discount: number;
     reference: string;
+    should_send: boolean;
     sent: boolean;
     sent_date?: string 
 };
