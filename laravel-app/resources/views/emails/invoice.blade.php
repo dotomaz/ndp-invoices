@@ -36,6 +36,12 @@
                                 <p>Pozdravljeni,</p>
         
                                 <p>pošiljamo vam položnico za plačilo vadnine za <b>{{$invoice->child_name}}</b> za mesec <b>{{$mesec}} {{$leto}}</b>.</p>
+
+                                <p>
+                                    Znesek <b>{{$price}} EUR</b> prosimo nakažite na 
+                                    TRR <b>SI56 0510 0801 5399 5187</b>. Kot sklic pa vnesite
+                                    <b>{{$reference1}} {{$reference2}}</b>
+                                </p>
                                 
                                 <p>Lep pozdrav,</p>
                                 
@@ -58,5 +64,3 @@
         </table>
     </body>
 </html>
-
-

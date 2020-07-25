@@ -78,7 +78,7 @@ class Importer {
     private function getReference($num, $team, $month, $year) {
         
         $numTxt = "$num";
-        while(strlen($numTxt) < 4) {
+        while(strlen($numTxt) < 3) {
             $numTxt = '0' . $numTxt;
         }
         

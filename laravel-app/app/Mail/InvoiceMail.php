@@ -54,6 +54,9 @@ class InvoiceMail extends Mailable
             ->with([
                 'mesec' => $months[$period->month - 1],
                 'leto' => $period->year,
+                'price' => number_format($this->invoice->price,2,',','.'),
+                'reference1' => substr($this->invoice->reference, 0, 4),
+                'reference2' => substr($this->invoice->reference, 4),
                 'logo' => resource_path('images/ndp-logo.png') 
             ])
             ->attachData(
