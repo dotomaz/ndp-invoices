@@ -43,13 +43,15 @@
                                     <b>{{$reference1}} {{$reference2}}</b>
                                 </p>
                                 
-                                <p>Lep pozdrav,</p>
-                                
-                                <p>Nogometno društvo Polzela</p>
+                                <p>
+                                    Lep pozdrav,<br />
+                                    Nogometno društvo Polzela
+                                </p>
                             </td>
                         </tr>
                         <tr>
                             <td>
+                                <br />
                                 <img src="{{ $message->embed($logo) }}">
                             </td>
                         </tr>
