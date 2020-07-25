@@ -9,6 +9,7 @@ import { ReactComponent as IconDelete } from './svg/delete.svg';
 import { ReactComponent as IconEdit } from './svg/edit.svg';
 import { ReactComponent as IconPreview } from './svg/preview.svg';
 import { ReactComponent as IconEmail } from './svg/email.svg';
+import { ReactComponent as IconCheckmark } from './svg/checkmark.svg';
 
 import PageContainer from './components/PageContainer';
 import BaseButton from './components/Button';
@@ -78,6 +79,9 @@ const Preview = styled(IconPreview)`
 const Email = styled(IconEmail)`
     height: 20px;
     margin-left: 5px;
+`;
+const Checkmark = styled(IconCheckmark)`
+    height: 20px;
 `;
 
 const InvoiceList: React.FunctionComponent<Props> = ({invoicePeriodId}) => {
@@ -158,6 +162,7 @@ const InvoiceList: React.FunctionComponent<Props> = ({invoicePeriodId}) => {
                 <Table>
                     <thead>
                         <Row>
+                            <HeaderCol></HeaderCol>
                             <HeaderCol>Selekcija</HeaderCol>
                             <HeaderCol>Ime otroka</HeaderCol>
                             <HeaderCol>Ime starša</HeaderCol>
@@ -171,6 +176,11 @@ const InvoiceList: React.FunctionComponent<Props> = ({invoicePeriodId}) => {
                     <tbody>
                     { store.invoices.map((invoice: Invoice, i: number) => { return (
                         <Row key={invoice.id}>
+                            <Col>
+                                {invoice.sent && (
+                                    <Checkmark />
+                                )}
+                            </Col>
                             <Col>U{invoice.team}</Col>
                             <Col>{invoice.child_name}</Col>
                             <Col>{invoice.parent_name}</Col>

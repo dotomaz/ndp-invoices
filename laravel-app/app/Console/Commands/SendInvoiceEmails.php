@@ -40,6 +40,7 @@ class SendInvoiceEmails extends Command
     {
         $invoices = Invoice::where("should_send", 1)
             ->where('sent', 0)
+            ->take(20)
             ->get();
 
         // dump($invoices);
