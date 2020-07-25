@@ -177,7 +177,7 @@ const InvoiceList: React.FunctionComponent<Props> = ({invoicePeriodId}) => {
                     { store.invoices.map((invoice: Invoice, i: number) => { return (
                         <Row key={invoice.id}>
                             <Col>
-                                {invoice.sent && (
+                                {!!invoice.sent && (
                                     <Checkmark />
                                 )}
                             </Col>
