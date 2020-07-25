@@ -3,11 +3,18 @@ import styled from 'styled-components';
 import { observer } from 'mobx-react-lite';
 
 import { Invoice } from './types/Invoice.interface';
+import { getHost } from './services/Host';
+
+import { ReactComponent as IconDelete } from './svg/delete.svg';
+import { ReactComponent as IconEdit } from './svg/edit.svg';
+import { ReactComponent as IconPreview } from './svg/preview.svg';
+import { ReactComponent as IconEmail } from './svg/email.svg';
 
 import PageContainer from './components/PageContainer';
 import BaseButton from './components/Button';
 import Loading from './components/Loading';
 import Sidebar from './components/Sidebar';
+import PreviewImage from './components/Preview';
 import InvoiceEdit from './InvoiceEdit';
 import { MainStoreContext } from './store/Main';
 
@@ -48,19 +55,40 @@ const Button = styled(BaseButton as any)`
     margin-right: 15px;
 `;
 
-const Link = styled(BaseButton as any)`
-    padding: 1px 5px;
-    border-radius: 4px;
-    font-size: 12px;
+const Link = styled.a`
+    cursor: pointer;
+`;
+
+const Delete = styled(IconDelete)`
+    height: 20px;
+    width: 20px;
+    margin-left: 5px;
+`;
+
+const Edit = styled(IconEdit)`
+    height: 20px;
+    margin-left: 5px;
+`;
+
+const Preview = styled(IconPreview)`
+    height: 20px;
+    margin-left: 5px;
+`;
+
+const Email = styled(IconEmail)`
+    height: 20px;
+    margin-left: 5px;
 `;
 
 const InvoiceList: React.FunctionComponent<Props> = ({invoicePeriodId}) => {
     const store = useContext(MainStoreContext);
     const [page, setPage] = useState<number>(1);
+    const [previewImage, setPreviewImage] = useState<string>('');
     const [isOpenSidebar, setIsOpenSidebar] = useState<boolean>(false);
 
     useEffect(() => {
         store.getInvoices(invoicePeriodId || 0, 1);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const editInvoice = (invoice: Invoice) => {
@@ -99,12 +127,12 @@ const InvoiceList: React.FunctionComponent<Props> = ({invoicePeriodId}) => {
     };
 
     const previewInvoice = (invoice: Invoice) => {
-        window.open('/api/invoice-form/'+ invoice.id, '_blank');
+        setPreviewImage(`${getHost()}/api/invoice-form/${invoice.id}`);
     };
 
 
     const importData = () => {
-        window.open('/api/import-data/'+ invoicePeriodId, '_blank');
+        window.open(`${getHost()}/api/import-data/${invoicePeriodId}`, '_blank');
     };
 
 
@@ -150,10 +178,10 @@ const InvoiceList: React.FunctionComponent<Props> = ({invoicePeriodId}) => {
                             <Col>{invoice.price}€</Col>
                             <Col>{invoice.reference}</Col>
                             <Col style={{textAlign: 'right'}}>
-                                <Link onClick={() => sendInvoice(invoice)} >pošlji</Link> {" "}
-                                <Link onClick={() => previewInvoice(invoice)} >predogled</Link> {" "}
-                                <Link onClick={() => editInvoice(invoice)} >uredi</Link> {" "}
-                                <Link onClick={() => deleteInvoice(invoice)} >odstrani</Link> {" "}
+                                <Link onClick={() => previewInvoice(invoice)} ><Preview /></Link> {" "}
+                                <Link onClick={() => editInvoice(invoice)} ><Edit /></Link> {" "}
+                                <Link onClick={() => sendInvoice(invoice)} ><Email /></Link> {" "}
+                                <Link onClick={() => deleteInvoice(invoice)} ><Delete /></Link> {" "}
                             </Col>
                         </Row>
                     );}) }
@@ -176,6 +204,10 @@ const InvoiceList: React.FunctionComponent<Props> = ({invoicePeriodId}) => {
                     }}
                     ChildComponent={InvoiceEdit}
                 />
+            )}
+
+            {!!previewImage.length && (
+                <PreviewImage image={previewImage} onClose={() => setPreviewImage('')} />
             )}
         </PageContainer>
     );

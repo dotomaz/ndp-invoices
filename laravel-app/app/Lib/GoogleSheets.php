@@ -33,7 +33,7 @@ class GoogleSheets {
             $client->setAccessToken($token);
             session(['access_token' => $token]);
 
-            throw new GoogleSheetAuthException($redirect_uri);
+            // throw new GoogleSheetAuthException($redirect_uri);
           }
 
         if(session('access_token', null) !== null) {

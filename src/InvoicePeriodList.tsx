@@ -5,6 +5,9 @@ import { Link } from '@reach/router'
 
 import { InvoicePeriod } from './types/InvoicePeriod.interface';
 
+import { ReactComponent as IconDelete } from './svg/delete.svg';
+import { ReactComponent as IconEdit } from './svg/edit.svg';
+
 import PageContainer from './components/PageContainer';
 import BaseButton from './components/Button';
 import BaseRow from './components/Row';
@@ -60,6 +63,15 @@ const Button = styled(BaseButton as any)`
         margin-left: 0px;
     }
 `;
+const Delete = styled(IconDelete)`
+    height: 20px;
+    width: 20px;
+`;
+
+const Edit = styled(IconEdit)`
+    height: 20px;
+    margin-left: 2px;
+`;
 
 const InvoicePeriodList: React.FunctionComponent<Props> = () => {
     const store = useContext(MainStoreContext);
@@ -94,18 +106,18 @@ const InvoicePeriodList: React.FunctionComponent<Props> = () => {
             { ( !store.invoicePeriodsLoading && !!store.invoicePeriods.length ) && (
                 <div className="container-fluid">
                     <Header>
-                        <Col1 sizes={['md-8']}>Obdobje</Col1>
-                        <Col3 sizes={['md-4']}>
+                        <Col1 sizes={['md-10']}>Obdobje</Col1>
+                        <Col3 sizes={['md-2']}>
                         </Col3>
                     </Header>
                 { store.invoicePeriods.map((invoicePeriod: InvoicePeriod, i: number) => { return (
                     <Row key={invoicePeriod.id}>
-                        <Col1 sizes={['md-8']}>
+                        <Col1 sizes={['md-10']}>
                             <Link to={`/period/${invoicePeriod.id}`}>{store.months[invoicePeriod.month-1]} {invoicePeriod.year}</Link>
                         </Col1>
                         <Col3 sizes={['md-2']}>
-                            <Button onClick={() => editInvoicePeriod(invoicePeriod)}>uredi</Button>
-                            <Button>briši</Button>
+                            <a onClick={() => editInvoicePeriod(invoicePeriod)}><Edit /></a>
+                            <a><Delete /></a>
                         </Col3>
                     </Row>
                 );}) }

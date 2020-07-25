@@ -18,12 +18,12 @@ class ApiController extends Controller
 
             if( !empty(session('local_redirect_url', null)) ){
                 $url = session('local_redirect_url');
-                session(['local_redirect_url', $null]);
+                session(['local_redirect_url' => null]);
                 return redirect($url);
             }
 
         }catch (\App\Lib\GoogleSheetAuthException $ex) {
-            dump($request->session()->all());
+            // dump([$request->session()->all(), $ex]);
             echo '<a href="'.$ex->getMessage().'">Login</a>';
             // return redirect($ex->getMessage());
         }
@@ -36,7 +36,10 @@ class ApiController extends Controller
             $importer->process($periodId);
         }catch (\App\Lib\GoogleSheetAuthException $ex) {
             $redirect_uri = $_SERVER['REQUEST_SCHEME']. '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
-            session(['local_redirect_url', $redirect_uri]);
+            session(['local_redirect_url'=> $redirect_uri]);
+
+            // print_r($request->session()->all());
+            // echo '<a href="/api/login">Login</a>';
             return redirect('/api/login');
         }
     }

@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import Loading from 'react-loading';
 
 import { ReactComponent as IconSpinner } from '../svg/spinner.svg';
 
@@ -18,7 +19,7 @@ const SpinnerComponent: React.FunctionComponent<Props> = (props) => {
 
     return (
         <Container>
-            <IconSpinner />
+            <Loading type="spinningBubbles" color="#666" width={100} height={100} />
         </Container>
     )
 };
