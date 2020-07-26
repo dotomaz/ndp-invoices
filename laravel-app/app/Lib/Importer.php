@@ -82,7 +82,6 @@ class Importer {
             $numTxt = '0' . $numTxt;
         }
         
-        $res = ;
         $res = $team < 10 ? '0'.$team : $team;
         $res .= $month < 10 ? '0'.$month : $month;
         $res .= $year;
