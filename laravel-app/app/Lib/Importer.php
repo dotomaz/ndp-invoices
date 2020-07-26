@@ -105,8 +105,8 @@ class Importer {
             $sum += $tt[$i]*$ponders[$j];
         }
 
-        $rest = $sum % 11;
-        $tt[] = $rest < 10 ? 11 - $rest : 0;
+        $rest = 11 - $sum % 11;
+        $tt[] = $rest < 10 ? $rest : 0;
         return implode('', $tt);
     }
     
