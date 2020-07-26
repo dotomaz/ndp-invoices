@@ -78,18 +78,38 @@ class Importer {
     private function getReference($num, $team, $month, $year) {
         
         $numTxt = "$num";
-        while(strlen($numTxt) < 3) {
+        while(strlen($numTxt) < 4) {
             $numTxt = '0' . $numTxt;
         }
         
-        $res = 'SI00';
-        $res .= $team < 10 ? '0'.$team : $team;
+        $res = ;
+        $res = $team < 10 ? '0'.$team : $team;
         $res .= $month < 10 ? '0'.$month : $month;
         $res .= $year;
         $res .= $numTxt;
         
-        return $res;
-    }    
+        return 'SI12'. $this->addChecksumToReference($res);
+    }
+
+    private function addChecksumToReference($reference){
+        $ponders = [2,3,4,5,6,7,8,9,10,11,12,13];
+        $tt = array_map(
+            function($el) {
+                return (int) $el;
+            },
+            str_split($reference)
+        );
+        $cnt = count($tt);
+        $sum = 0;
+
+        for($i=$cnt-1, $j=0; $i>=0; $i--, $j++){
+            $sum += $tt[$i]*$ponders[$j];
+        }
+
+        $rest = $sum % 11;
+        $tt[] = $rest < 10 ? 11 - $rest : 0;
+        return implode('', $tt);
+    }
     
     private function arr($arr, $index) {
         if( !empty($arr) && count($arr) > $index) {
