@@ -84,9 +84,18 @@ const Checkmark = styled(IconCheckmark)`
     height: 20px;
 `;
 
+const Filter = styled.div`
+    padding: 20px 0 0;
+`;
+
+const FilterItem = styled.label`
+    margin-right: 15px;
+`;
+
 const InvoiceList: React.FunctionComponent<Props> = ({invoicePeriodId}) => {
     const store = useContext(MainStoreContext);
     const [page, setPage] = useState<number>(1);
+    const [filter, setFilter] = useState<number>(0);
     const [previewImage, setPreviewImage] = useState<string>('');
     const [isOpenSidebar, setIsOpenSidebar] = useState<boolean>(false);
 
@@ -98,6 +107,10 @@ const InvoiceList: React.FunctionComponent<Props> = ({invoicePeriodId}) => {
     const editInvoice = (invoice: Invoice) => {
         store.invoice = {...invoice};
         setIsOpenSidebar(true);
+    };
+
+    const refreshInvoice = () => {
+        store.getInvoices(invoicePeriodId || 0, 1);
     };
 
     const newInvoice = () => {
@@ -139,9 +152,23 @@ const InvoiceList: React.FunctionComponent<Props> = ({invoicePeriodId}) => {
         window.open(`${getHost()}/api/import-data/${invoicePeriodId}`, '_blank');
     };
 
+    const teams: number[] = [];
+    store.invoices.forEach((invoice) => {
+        if (teams.indexOf(invoice.team) < 0) {
+            teams.push(invoice.team);
+        }
+    });
+    teams.sort((a,b) => {
+        const aa = a < 10 ? `0${a}` : `${a}`;
+        const bb = b < 10 ? `0${b}` : `${b}`;
+        return aa === bb ? 0 : aa < bb ? -1 : 1;
+    });
+
 
     return (
         <PageContainer>
+            <Button onClick={() => refreshInvoice()}>Osveži podatke</Button>
+
             <Button onClick={() => newInvoice()}>Novi račun</Button>
 
             <Button onClick={() => importData()}>Uvozi podatke iz tabele</Button>
@@ -159,44 +186,77 @@ const InvoiceList: React.FunctionComponent<Props> = ({invoicePeriodId}) => {
             )}
 
             { ( !store.invoicesLoading && !!store.invoices.length ) && (
-                <Table>
-                    <thead>
-                        <Row>
-                            <HeaderCol></HeaderCol>
-                            <HeaderCol>Selekcija</HeaderCol>
-                            <HeaderCol>Ime otroka</HeaderCol>
-                            <HeaderCol>Ime starša</HeaderCol>
-                            <HeaderCol>Email</HeaderCol>
-                            <HeaderCol>Znesek</HeaderCol>
-                            <HeaderCol>Referenca</HeaderCol>
-                            <HeaderCol>
-                            </HeaderCol>
-                        </Row>
-                    </thead>
-                    <tbody>
-                    { store.invoices.map((invoice: Invoice, i: number) => { return (
-                        <Row key={invoice.id}>
-                            <Col>
-                                {!!invoice.sent && (
-                                    <Checkmark />
-                                )}
-                            </Col>
-                            <Col>U{invoice.team}</Col>
-                            <Col>{invoice.child_name}</Col>
-                            <Col>{invoice.parent_name}</Col>
-                            <Col>{invoice.email}</Col>
-                            <Col>{invoice.price}€</Col>
-                            <Col>{invoice.reference}</Col>
-                            <Col style={{textAlign: 'right'}}>
-                                <Link onClick={() => previewInvoice(invoice)} ><Preview /></Link> {" "}
-                                <Link onClick={() => editInvoice(invoice)} ><Edit /></Link> {" "}
-                                <Link onClick={() => sendInvoice(invoice)} ><Email /></Link> {" "}
-                                <Link onClick={() => deleteInvoice(invoice)} ><Delete /></Link> {" "}
-                            </Col>
-                        </Row>
-                    );}) }
-                    </tbody>
+                <>
+                    { !!teams?.length && (
+                        <Filter>
+                            <FilterItem>
+                                <input 
+                                    type="radio" 
+                                    name="filter"
+                                    value="vsi"
+                                    checked={filter === 0}
+                                    onClick={() => setFilter(0)}
+                                /> {" "}
+                                Vsi
+                            </FilterItem>
+                            {teams.map(team => (
+                                <FilterItem>
+                                    <input 
+                                        type="radio" 
+                                        name="filter"
+                                        value="team"
+                                        checked={filter === team}
+                                        onClick={() => setFilter(team)}
+                                    /> {" "}
+                                    U{team}
+                                </FilterItem>
+
+                            ))}
+
+                        </Filter>
+                    )}
+                
+                    <Table>
+                        <thead>
+                            <Row>
+                                <HeaderCol></HeaderCol>
+                                <HeaderCol>Selekcija</HeaderCol>
+                                <HeaderCol>Ime otroka</HeaderCol>
+                                <HeaderCol>Ime starša</HeaderCol>
+                                <HeaderCol>Email</HeaderCol>
+                                <HeaderCol>Znesek</HeaderCol>
+                                <HeaderCol>Referenca</HeaderCol>
+                                <HeaderCol>
+                                </HeaderCol>
+                            </Row>
+                        </thead>
+                        <tbody>
+                        { store.invoices
+                            .filter((invoice: Invoice) => filter > 0 ? invoice.team === filter : true )
+                            .map((invoice: Invoice, i: number) => { return (
+                            <Row key={invoice.id}>
+                                <Col>
+                                    {!!invoice.sent && (
+                                        <Checkmark />
+                                    )}
+                                </Col>
+                                <Col>U{invoice.team}</Col>
+                                <Col>{invoice.child_name}</Col>
+                                <Col>{invoice.parent_name}</Col>
+                                <Col>{invoice.email}</Col>
+                                <Col>{invoice.price}€</Col>
+                                <Col>{invoice.reference}</Col>
+                                <Col style={{textAlign: 'right'}}>
+                                    <Link onClick={() => previewInvoice(invoice)} ><Preview /></Link> {" "}
+                                    <Link onClick={() => editInvoice(invoice)} ><Edit /></Link> {" "}
+                                    <Link onClick={() => sendInvoice(invoice)} ><Email /></Link> {" "}
+                                    <Link onClick={() => deleteInvoice(invoice)} ><Delete /></Link> {" "}
+                                </Col>
+                            </Row>
+                        );}) }
+                        </tbody>
                 </Table>
+                </>
             )}
 
             {isOpenSidebar && (

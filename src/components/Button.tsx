@@ -8,9 +8,14 @@ const Button = styled.button`
     border: 0;
     text-transform: uppercase;
     font-weight: 700;
+    outline: none;
 
     &:disabled{
         filter: brightness(180%);
+    }
+
+    &:focus{
+        outline: none;
     }
 `;
 
