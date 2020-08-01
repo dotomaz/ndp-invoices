@@ -7,7 +7,7 @@ import { getHost } from './services/Host';
 
 import { ReactComponent as IconDelete } from './svg/delete.svg';
 import { ReactComponent as IconEdit } from './svg/edit.svg';
-import { ReactComponent as IconPreview } from './svg/preview.svg';
+import { ReactComponent as IconPreview } from './svg/qr-code.svg';
 import { ReactComponent as IconEmail } from './svg/email.svg';
 import { ReactComponent as IconCheckmark } from './svg/checkmark.svg';
 
@@ -64,11 +64,15 @@ const Delete = styled(IconDelete)`
     height: 20px;
     width: 20px;
     margin-left: 5px;
+
+    path {
+        fill: #d33;
+    }
 `;
 
 const Edit = styled(IconEdit)`
     height: 20px;
-    margin-left: 5px;
+    margin-left: 10px;
 `;
 
 const Preview = styled(IconPreview)`
