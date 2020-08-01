@@ -15,7 +15,11 @@ class SendEmailToInvoice
         try{
             if (!empty($args['id'])) {
                 Invoice::find($args['id'])
-                    ->update(['should_send' => 1]);
+                    ->update([
+                        'should_send' => 1,
+                        'sent' => 0,
+                        'sent_date' => null, 
+                    ]);
     
                 return ['success' => 1];
             }
