@@ -85,7 +85,9 @@ export class MainStore {
     }
 
     get invoicePeriodText() {
-        return this.months[this.invoicePeriod.month-1] +" "+ this.invoicePeriod.year;
+        return this.invoicePeriod.month > 0 && this.invoicePeriod.year > 0 ? 
+            this.months[this.invoicePeriod.month-1] +" "+ this.invoicePeriod.year :
+            '';
     }
 
     async getInvoicePeriods(page: number){
@@ -199,6 +201,9 @@ export class MainStore {
         try{
             const invoices = await service.fetch(periodId, page);
             this.invoices = this.mapInvoices(invoices);
+            if (!!this.invoices?.length) {
+                this.invoicePeriod = this.invoices[0].period || {id: -1, year: -1, month: -1};
+            }
             
             this.invoicesLoading = false;
             this.invoicesLoaded = true;
