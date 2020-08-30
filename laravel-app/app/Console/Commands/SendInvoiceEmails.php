@@ -49,6 +49,8 @@ class SendInvoiceEmails extends Command
             // dump($invoice);
             echo "Sending email for ". $invoice->child_name ." ... ";
             \Mail::to('tomaz@dobrisek.si')->queue(new \App\Mail\InvoiceMail($invoice));
+            \Mail::to('peter.hudej@gmail.com')->queue(new \App\Mail\InvoiceMail($invoice));
+            \Mail::to('bakaric87@gmail.com')->queue(new \App\Mail\InvoiceMail($invoice));
 
             $invoice->sent = 1;
             $invoice->sent_date = date('Y-m-d H:i:s');
