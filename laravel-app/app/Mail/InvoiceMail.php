@@ -20,6 +20,13 @@ class InvoiceMail extends Mailable
     public $invoice;
 
     /**
+     * The invoice instance.
+     *
+     * @var InvoicePeriod
+     */
+    public $period;
+
+    /**
      * Create a new message instance.
      *
      * @return void
