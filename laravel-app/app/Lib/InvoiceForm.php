@@ -3,6 +3,7 @@
 namespace App\Lib;
 
 use App\Invoice;
+use App\InvoicePeriod;
 use Imagine\Gd\Imagine;
 use Imagine\Image\Point;
 use Endroid\QrCode\QrCode;
@@ -11,20 +12,24 @@ class InvoiceForm {
 
     public function generate($invoiceId) {
         $invoice = Invoice::find($invoiceId);
-
+        $period = InvoicePeriod::find($invoice['period_id']);
+        // dump([$invoice, $period]); die;
         header('Content-Type: image/png');
-        echo $this->makeImage($invoice);
+        echo $this->makeImage($period, $invoice);
     }
 
-    public function makeImage($invoice) {
+    public function makeImage($period, $invoice) {
+        $month = $period['month'] < 10 ? '0'.$period['month'] : $period['month'];
+        $year = $period['year'];
+
         $data = [
             'iban' => 'SI56 0510 0801 5399 5187',
             'znesek' => "***". number_format($invoice['price'],2, ',', '.'),
             'znesekRaw' => $invoice['price'],
-            'namen' => "Vadnina ".$invoice['child_name']." 07/2020.",
-            'namen2' => "Vadnina ".$invoice['child_name']."\n07/2020.",
+            'namen' => "Vadnina ".$invoice['child_name']." ".$month."/".$year,
+            'namen2' => "Vadnina ".$invoice['child_name']."\n".$month."/".$year,
             'kodaNamena' => "OTHR",
-            'rok' => "31.07.2020",
+            'rok' => "18.".$month.".".$year."",
             'modul' => substr($invoice['reference'], 0, 4),
             'referenca' => substr($invoice['reference'], 4),
             'prejemnik' => explode(';', 'Nogometno društvo Polzela;Malteška cesta 38;3313 Polzela'),
@@ -50,7 +55,7 @@ class InvoiceForm {
         $image->draw()->text($data['placnik'][0], $font2, new Point(40, 75));
         $image->draw()->text($data['placnik'][1], $font2, new Point(40, 100));
         $image->draw()->text($data['placnik'][2], $font2, new Point(40, 125));
-        $image->draw()->text($data['namen2']."\n". $data['rok'], $font2, new Point(40, 205));
+        $image->draw()->text($data['namen2']."\nrok plačila: ". $data['rok'], $font2, new Point(40, 205));
         $image->draw()->text($data['znesek'], $font2, new Point(140, 315));
         $image->draw()->text($data['iban'], $font2, new Point(40, 382));
         $image->draw()->text($data['modul'].' '.$data['referenca'], $font2, new Point(40, 485));
@@ -64,7 +69,7 @@ class InvoiceForm {
 
         $image->draw()->text($data['znesek'], $font, new Point(967, 360));
         $image->draw()->text($data['kodaNamena'], $font, new Point(576, 430));
-        $image->draw()->text($data['namen'] ." / ". $data['rok'], $font, new Point(716, 430));
+        $image->draw()->text($data['namen'] .", rok plač. ". $data['rok'], $font, new Point(716, 430));
         $image->draw()->text($data['iban'], $font, new Point(530, 506));
         $image->draw()->text($data['modul'], $font, new Point(530, 571));
         $image->draw()->text($data['referenca'], $font, new Point(670, 571));
