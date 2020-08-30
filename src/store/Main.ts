@@ -1,5 +1,5 @@
 import { createContext } from 'react';
-import { decorate, observable } from 'mobx';
+import { computed, decorate, observable } from 'mobx';
 import { navigate } from "@reach/router";
 
 import { getAccessToken, setAccessToken } from './Storage';
@@ -321,6 +321,7 @@ decorate(MainStore, {
     invoicesLoaded: observable,
     invoiceLoading: observable,
     invoiceLoaded: observable,
+    invoicePeriodText: computed,
 });
 
 export const MainStoreContext = createContext(new MainStore(false));
