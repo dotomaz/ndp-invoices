@@ -8,14 +8,7 @@ use App\Invoice;
 class Importer {
 
     private $spreadsheetId = '1dfEnt3jQDAGY0rqPoZuaO72m3oyUv62KqNicIGudcRI';
-    private $ranges = [
-        7 => 'Vadnine U7!A5:O50',
-        8 => 'Vadnine U8!A5:O50',
-        9 => 'Vadnine U9!A5:O50',
-        11 => 'Vadnine U11!A5:O50',
-        13 => 'Vadnine U13!A5:O50',
-        15 => 'Vadnine U15!A5:O50',
-    ];
+    private $range = 'Vadnine!A3:O130';
 
     public function process($period) {
 
@@ -24,41 +17,63 @@ class Importer {
             throw new Exception("Invalid invoice period.");
         }
 
-        foreach( $this->ranges as $team => $range ){
-            echo "Uvažam <b>U$team</b>: ";
-            $this->importTeam($period, $team, $invoicePeriod);
-            echo "Done!<br>";
-        }
+        echo "Uvažam podatke: <br>";
+        $this->importTeam($period, $invoicePeriod);
+        echo "Done!<br>";
     }
 
-    private function importTeam($period, $team, $invoicePeriod) {
+    private function importTeam($period, $invoicePeriod) {
 
-        $range = $this->ranges[$team];
         $googleSheets = new GoogleSheets();
-        $values = $googleSheets->getSheetRange($this->spreadsheetId, $range);
+        $values = $googleSheets->getSheetRange($this->spreadsheetId, $this->range);
 
         if (!empty($values)) {
             foreach ($values as $row) {
-                $childName = $this->arr($row, 1). ' ' .$this->arr($row, 2);
+                $num = $this->arr($row, 0);
+                $team = preg_replace('#[^0-9]#', '', $this->arr($row, 1));
+                $childName = $this->arr($row, 2). ' ' .$this->arr($row, 3);
                 $reference = $this->getReference($this->arr($row, 0), $team, $invoicePeriod['month'], $invoicePeriod['year']);
 
                 $invoice = Invoice::where('reference', $reference)->first();
 
-                if( is_null($invoice) && strlen(trim($childName)) > 0 ) {
-                    Invoice::create([
-                        'period_id' => $invoicePeriod['id'],
-                        'parent_name' => $this->arr($row, 10),
-                        'child_name' => $childName,
-                        'team' => $team,
-                        'email' => $this->arr($row, 14),
-                        'address' => $this->arr($row, 4),
-                        'city' => $this->arr($row, 6),
-                        'price' => $this->getPrice($team),
-                        'discount' => 0,
-                        'reference' => $reference, 
-                    ]);
-                    echo '. ';
+                if (strlen(trim($childName)) > 0) {
+
+                    try {
+                        if( empty(trim($childName)) ) throw new \Exception("Ime otroka ni vpisano (".$num.")");
+                        if( empty($this->arr($row, 10)) ) throw new \Exception("Ime starša ni vpisano (".$num.")");
+                        if( empty($this->arr($row, 14)) ) throw new \Exception("Email ni vpisan (".$num.")");
+                        if( !filter_var($this->arr($row, 14), FILTER_VALIDATE_EMAIL) ) throw new \Exception("Email ni veljaven (".$num.")");
+                    } catch ( \Exception $ex) {
+                        echo "<br>Napaka: <b>". $ex->getMessage() ."</b><br>";
+                    }
+
+                    if ( is_null($invoice) ) {
+                        Invoice::create([
+                            'period_id' => $invoicePeriod['id'],
+                            'parent_name' => $this->arr($row, 10),
+                            'child_name' => $childName,
+                            'team' => $team,
+                            'email' => $this->arr($row, 14),
+                            'address' => $this->arr($row, 5),
+                            'city' => $this->arr($row, 7),
+                            'price' => $this->getPrice($team),
+                            'discount' => 0,
+                            'reference' => $reference, 
+                        ]);
+                        echo '+ ';
+                    } else {
+                        $invoice->period_id = $invoicePeriod['id'];
+                        $invoice->parent_name = $this->arr($row, 10);
+                        $invoice->child_name = $childName;
+                        $invoice->team = $team;
+                        $invoice->email = $this->arr($row, 14);
+                        $invoice->address = $this->arr($row, 5);
+                        $invoice->city = $this->arr($row, 7);
+                        $invoice->save();
+                        echo '° ';
+                    }
                 }
+                
                 
             }
         }

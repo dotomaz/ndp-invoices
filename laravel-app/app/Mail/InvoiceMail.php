@@ -27,6 +27,7 @@ class InvoiceMail extends Mailable
     public function __construct(Invoice $invoice)
     {
         $this->invoice = $invoice;
+        $this->period = \App\InvoicePeriod::find($this->invoice->period_id);
     }
 
     /**
@@ -38,11 +39,10 @@ class InvoiceMail extends Mailable
     {
         // dump($this->invoice);
         $months = ['januar', 'februar', 'marec', 'april', 'maj', 'junij', 'julij', 'avgust', 'september', 'oktober', 'november', 'december'];
-        $period = \App\InvoicePeriod::find($this->invoice->period_id);
 
         $form = new \App\Lib\InvoiceForm();
 
-        $subject = 'ND Polzela vadnina za mesec '.$months[$period->month - 1].'_'.$period->year;
+        $subject = 'Predračun za vadnino U'. $this->invoice->team.' za mesec '.$months[$this->period->month - 1].'/'.$this->period->year;
         if( \Config::get('app.env') !== 'production'){
             $subject = '*** TEST *** '. $subject; 
         }
@@ -52,16 +52,19 @@ class InvoiceMail extends Mailable
             ->subject($subject)
             ->view('emails.invoice')
             ->with([
-                'mesec' => $months[$period->month - 1],
-                'leto' => $period->year,
+                'mesec' => $months[$this->period->month - 1],
+                'leto' => $this->period->year,
+                'dateNow' => date('d. '). $months[$this->period->month - 1].' '.$this->period->year,
+                'dueDate' => '18. '.$months[$this->period->month - 1].' '.$this->period->year,
                 'price' => number_format($this->invoice->price,2,',','.'),
                 'reference1' => substr($this->invoice->reference, 0, 4),
                 'reference2' => substr($this->invoice->reference, 4),
+                'billNo' => substr($this->invoice->reference, 4, 12),
                 'logo' => resource_path('images/ndp-logo.png') 
             ])
             ->attachData(
-                $form->makeImage($this->invoice), 
-                'vadnina_'.$months[$period->month - 1].'_'.$period->year.'.png', [
+                $form->makeImage($this->period, $this->invoice), 
+                'vadnina_'.$months[$this->period->month - 1].'_'.$this->period->year.'.png', [
                 'mime' => 'image/png',
             ]);
     }

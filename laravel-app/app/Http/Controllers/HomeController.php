@@ -33,7 +33,7 @@ class HomeController extends Controller
      */
     public function test()
     {
-        // $invoice = \App\Invoice::find(1);
+        // $invoice = \App\Invoice::find(96);
 
         // //\Mail::to('tomaz@dobrisek.si')->queue(new \App\Mail\InvoiceMail($invoice));
 
