@@ -48,6 +48,7 @@ class Importer {
                     }
 
                     $price = intval($this->arr($row, 16));
+                    dump([$childName, $this->arr($row, 16), $price]);
                     if( $price > 0 ) {
                         if ( is_null($invoice) ) {
                             Invoice::create([
