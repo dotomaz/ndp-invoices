@@ -47,7 +47,7 @@ class Importer {
                         echo "<br>Napaka: <b>". $ex->getMessage() ."</b><br>";
                     }
 
-                    $price = intval($this->arr($row, 16));
+                    $price = intval(preg_replace( '#[^0-9\.]#gi', '', str_replace(',', '.', $this->arr($row, 16))));
                     dump([$childName, $this->arr($row, 16), $price]);
                     if( $price > 0 ) {
                         if ( is_null($invoice) ) {
