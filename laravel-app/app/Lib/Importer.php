@@ -8,7 +8,7 @@ use App\Invoice;
 class Importer {
 
     private $spreadsheetId = '1dfEnt3jQDAGY0rqPoZuaO72m3oyUv62KqNicIGudcRI';
-    private $range = 'Vadnine!A3:O130';
+    private $range = 'Vadnine!A3:Q130';
 
     public function process($period) {
 
@@ -47,30 +47,34 @@ class Importer {
                         echo "<br>Napaka: <b>". $ex->getMessage() ."</b><br>";
                     }
 
-                    if ( is_null($invoice) ) {
-                        Invoice::create([
-                            'period_id' => $invoicePeriod['id'],
-                            'parent_name' => $this->arr($row, 10),
-                            'child_name' => $childName,
-                            'team' => $team,
-                            'email' => $this->arr($row, 14),
-                            'address' => $this->arr($row, 5),
-                            'city' => $this->arr($row, 7),
-                            'price' => $this->getPrice($team),
-                            'discount' => 0,
-                            'reference' => $reference, 
-                        ]);
-                        echo '+ ';
-                    } else {
-                        $invoice->period_id = $invoicePeriod['id'];
-                        $invoice->parent_name = $this->arr($row, 10);
-                        $invoice->child_name = $childName;
-                        $invoice->team = $team;
-                        $invoice->email = $this->arr($row, 14);
-                        $invoice->address = $this->arr($row, 5);
-                        $invoice->city = $this->arr($row, 7);
-                        $invoice->save();
-                        echo '° ';
+                    $price = intval($this->arr($row, 16));
+                    if( $price > 0 ) {
+                        if ( is_null($invoice) ) {
+                            Invoice::create([
+                                'period_id' =>      $invoicePeriod['id'],
+                                'parent_name' =>    $this->arr($row, 10),
+                                'child_name' =>     $childName,
+                                'team' =>           $team,
+                                'email' =>          $this->arr($row, 14),
+                                'address' =>        $this->arr($row, 5),
+                                'city' =>           $this->arr($row, 7),
+                                'price' =>          $price,
+                                'discount' =>       0,
+                                'reference' =>      $reference, 
+                            ]);
+                            echo '+ ';
+                        } else {
+                            $invoice->period_id =   $invoicePeriod['id'];
+                            $invoice->parent_name = $this->arr($row, 10);
+                            $invoice->child_name =  $childName;
+                            $invoice->team =        $team;
+                            $invoice->email =       $this->arr($row, 14);
+                            $invoice->address =     $this->arr($row, 5);
+                            $invoice->city =        $this->arr($row, 7);
+                            $invoice->price =       $price;
+                            $invoice->save();
+                            echo '° ';
+                        }
                     }
                 }
                 
