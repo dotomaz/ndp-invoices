@@ -48,7 +48,7 @@ class Importer {
                     }
 
                     $price = round(floatval(preg_replace( '#[^0-9\\.]#si', '', str_replace(',', '.', $this->arr($row, 16)))));
-                    dump([$childName, $this->arr($row, 16), $price]);
+
                     if( $price > 0 ) {
                         if ( is_null($invoice) ) {
                             Invoice::create([
