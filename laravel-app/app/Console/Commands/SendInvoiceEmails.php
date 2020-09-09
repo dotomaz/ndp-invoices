@@ -48,7 +48,9 @@ class SendInvoiceEmails extends Command
         $invoices->map(function($invoice) {
             // dump($invoice);
             echo "Sending email for ". $invoice->child_name ." ... ";
-            \Mail::to('tomaz@dobrisek.si')->queue(new \App\Mail\InvoiceMail($invoice));
+            \Mail::to($invoice->email)
+                ->bcc('info@nogomet-polzela.si')
+                ->queue(new \App\Mail\InvoiceMail($invoice));
             // \Mail::to('peter.hudej@gmail.com')->queue(new \App\Mail\InvoiceMail($invoice));
             // \Mail::to('bakaric87@gmail.com')->queue(new \App\Mail\InvoiceMail($invoice));
 
