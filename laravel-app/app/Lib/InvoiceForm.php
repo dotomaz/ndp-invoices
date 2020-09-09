@@ -23,7 +23,7 @@ class InvoiceForm {
         $year = $period['year'];
 
         $data = [
-            'iban' => 'SI56 0510 0801 5399 5187',
+            'iban' => 'SI56 0510 0801 5399 518',
             'znesek' => "***". number_format($invoice['price'],2, ',', '.'),
             'znesekRaw' => $invoice['price'],
             'namen' => "Vadnina ".$invoice['child_name']." ".$month."/".$year,

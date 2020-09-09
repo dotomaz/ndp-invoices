@@ -61,7 +61,7 @@
 
                                 <p>
                                     Znesek <b>{{$price}} EUR</b> prosimo nakažite na 
-                                    TRR <b>SI56 0510 0801 5399 5187</b>. <br>
+                                    TRR <b>SI56 0510 0801 5399 518</b>. <br>
                                     Kot sklic pa vnesite
                                     <b>{{$reference1}} {{$reference2}}</b>.
                                 </p>
