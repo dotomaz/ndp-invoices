@@ -49,7 +49,7 @@ class InvoiceMail extends Mailable
 
         $form = new \App\Lib\InvoiceForm();
 
-        $subject = 'Predračun za vadnino U'. $this->invoice->team.' za mesec '.$months[$this->period->month - 1].'/'.$this->period->year;
+        $subject = 'Račun za vadnino za mesec '.$months[$this->period->month - 1].'/'.$this->period->year;
         if( \Config::get('app.env') !== 'production'){
             $subject = '*** TEST *** '. $subject; 
         }

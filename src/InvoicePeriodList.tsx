@@ -86,6 +86,14 @@ const InvoicePeriodList: React.FunctionComponent<Props> = () => {
         setIsOpenSidebar(true);
     };
 
+    const deleteInvoicePeriod = (invoicePeriod: InvoicePeriod) => {
+        if(window.confirm('Ali ste prepričani, da želite odstraniti to obračunsko obdobje?')){
+            store.deleteInvoicePeriod(invoicePeriod.id).then(() => {
+                store.getInvoicePeriods(1);
+            });
+        }
+    };
+
     const newInvoicePeriod = () => {
         store.newInvoicePeriod();
         setIsOpenSidebar(true);
@@ -117,7 +125,7 @@ const InvoicePeriodList: React.FunctionComponent<Props> = () => {
                         </Col1>
                         <Col3 sizes={['md-2']}>
                             <a onClick={() => editInvoicePeriod(invoicePeriod)}><Edit /></a>
-                            <a><Delete /></a>
+                            <a onClick={() => deleteInvoicePeriod(invoicePeriod)}><Delete /></a>
                         </Col3>
                     </Row>
                 );}) }

@@ -35,7 +35,7 @@
                             <td>
                                 <p>Pozdravljeni,</p>
         
-                                <p>pošiljamo vam predračun za plačilo vadnine U{{$invoice->team}} za <b>{{$invoice->child_name}}</b> za mesec <b>{{$mesec}} {{$leto}}</b>.</p>
+                                <p>pošiljamo vam račun za plačilo vadnine za <b>{{$invoice->child_name}}</b> za mesec <b>{{$mesec}} {{$leto}}</b>.</p>
 
                                 <p>
                                     <b>Izdajatelj</b>:<br>
