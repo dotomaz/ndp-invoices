@@ -42,14 +42,14 @@ class Importer {
                         if( empty(trim($childName)) ) throw new \Exception("Ime otroka ni vpisano (".$num.")");
                         if( empty($this->arr($row, 10)) ) throw new \Exception("Ime starša ni vpisano (".$num.")");
                         if( empty($this->arr($row, 14)) ) throw new \Exception("Email ni vpisan (".$num.")");
-                        if( !filter_var($this->arr($row, 14), FILTER_VALIDATE_EMAIL) ) throw new \Exception("Email ni veljaven (".$num.")");
+                        if( !filter_var($this->arr($row, 14), FILTER_VALIDATE_EMAIL) ) throw new \Exception("Email naslov ni veljaven (".$num.") Položnica ni kreirana.");
                     } catch ( \Exception $ex) {
                         echo "<br>Napaka: <b>". $ex->getMessage() ."</b><br>";
                     }
 
                     $price = round(floatval(preg_replace( '#[^0-9\\.]#si', '', str_replace(',', '.', $this->arr($row, 16)))));
 
-                    if( $price > 0 ) {
+                    if( $price > 0 && filter_var($this->arr($row, 14), FILTER_VALIDATE_EMAIL)) {
                         if ( is_null($invoice) ) {
                             Invoice::create([
                                 'period_id' =>      $invoicePeriod['id'],
